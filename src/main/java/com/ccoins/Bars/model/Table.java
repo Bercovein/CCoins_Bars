@@ -13,5 +13,5 @@ public class Table {
     private Long id;
     private Long number;
     private boolean active;
-    private Long bar;
+    private Bar bar;
 }

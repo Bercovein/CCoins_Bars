@@ -8,11 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/demo")
-public class DemoController {
+@RequestMapping("/bar")
+public class BarController {
 
-    @GetMapping
-    public ResponseEntity<String> demo(){
-        return ResponseEntity.of(Optional.of("ITS ALIVE!"));
-    }
 }

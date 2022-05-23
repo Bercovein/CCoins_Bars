@@ -1,13 +1,14 @@
 package com.ccoins.Bars.exceptions.controllerAdvice;
 
-import com.ccoins.Bff.exceptions.*;
+import com.ccoins.Bars.exceptions.ObjectNoContentException;
+import com.ccoins.Bars.exceptions.*;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import static com.ccoins.Bff.utils.ErrorUtils.buildMessage;
+import static com.ccoins.Bars.exceptions.utils.ErrorUtils.buildMessage;
 import static org.springframework.core.Ordered.HIGHEST_PRECEDENCE;
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.ResponseEntity.status;

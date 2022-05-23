@@ -1,6 +1,6 @@
-package com.ccoins.Bars.utils;
+package com.ccoins.Bars.exceptions.utils;
 
-import com.ccoins.Bff.dto.response.ExceptionRsDTO;
+import com.ccoins.Bars.exceptions.dto.ExceptionRsDTO;
 
 public class ErrorUtils {
 

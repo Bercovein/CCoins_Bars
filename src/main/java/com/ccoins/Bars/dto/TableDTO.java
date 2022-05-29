@@ -5,25 +5,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotEmpty;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class BarDTO {
+public class TableDTO {
 
     private Long id;
 
-    @NotEmpty
-    private String name;
-
-    @NotEmpty
-    private String address;
-
-    private String menuLink;
+    private Long number;
 
     private boolean active;
 
-    private Long owner;
+    private Long bar;
 }

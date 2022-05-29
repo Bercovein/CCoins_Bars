@@ -22,14 +22,18 @@ import java.util.Optional;
 @Slf4j
 public class BarsService implements IBarsService {
 
+    private final IBarsRepository repository;
+
     @Autowired
-    private IBarsRepository barsRepository;
+    public BarsService(IBarsRepository repository) {
+        this.repository = repository;
+    }
 
     @Override
     public ResponseEntity<BarDTO> saveOrUpdate(BarDTO barDTO) {
 
         try {
-            Bar bar = this.barsRepository.save((Bar)MapperUtils.map(barDTO,Bar.class));
+            Bar bar = this.repository.save((Bar)MapperUtils.map(barDTO,Bar.class));
             return ResponseEntity.ok((BarDTO)MapperUtils.map(bar,BarDTO.class));
         }catch(Exception e){
             log.error(ErrorUtils.parseMethodError(this.getClass()));
@@ -43,7 +47,7 @@ public class BarsService implements IBarsService {
         ListDTO response = new ListDTO(new ArrayList<>());
 
         try {
-            Optional<List<Bar>> barsOpt = this.barsRepository.findByOwner(ownerId);
+            Optional<List<Bar>> barsOpt = this.repository.findByOwner(ownerId);
 
             if(barsOpt.isPresent()){
                 List<Bar> bars = barsOpt.get();
@@ -63,12 +67,25 @@ public class BarsService implements IBarsService {
     public ResponseEntity<BarDTO> findById(Long id) {
 
         try {
-            Optional<Bar> bar = this.barsRepository.findById(id);
+            Optional<Bar> bar = this.repository.findById(id);
             return ResponseEntity.ok((BarDTO)MapperUtils.map(bar,BarDTO.class));
         }catch(Exception e){
             log.error(ErrorUtils.parseMethodError(this.getClass()));
             throw new UnauthorizedException(ExceptionConstant.BAR_FIND_BY_ID_ERROR_CODE,
                     this.getClass(), ExceptionConstant.BAR_FIND_BY_ID_ERROR);
         }
+    }
+
+    @Override
+    public ResponseEntity<BarDTO> active(Long id) {
+
+        try {
+            this.repository.updateActive(id);
+        }catch(Exception e){
+            log.error(ErrorUtils.parseMethodError(this.getClass()));
+            throw new UnauthorizedException(ExceptionConstant.TABLE_UPDATE_ACTIVE_ERROR_CODE,
+                    this.getClass(), ExceptionConstant.TABLE_UPDATE_ACTIVE_ERROR);
+        }
+        return this.findById(id);
     }
 }

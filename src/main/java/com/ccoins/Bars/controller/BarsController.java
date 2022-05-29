@@ -11,21 +11,30 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/bars")
 public class BarsController {
 
+    private final IBarsService service;
+
     @Autowired
-    IBarsService barsService;
+    public BarsController(IBarsService service) {
+        this.service = service;
+    }
 
     @PostMapping
     ResponseEntity<BarDTO> saveOrUpdate(@RequestBody BarDTO barDTO){
-        return this.barsService.saveOrUpdate(barDTO);
+        return this.service.saveOrUpdate(barDTO);
     }
 
     @GetMapping("/owner/{ownerId}")
     ResponseEntity<ListDTO> findAllByOwner(@PathVariable("ownerId") Long ownerId) {
-        return this.barsService.findAllByOwner(ownerId);
+        return this.service.findAllByOwner(ownerId);
     }
 
     @GetMapping("/{id}")
     ResponseEntity<BarDTO> findById(@PathVariable("id") Long id) {
-        return this.barsService.findById(id);
+        return this.service.findById(id);
+    }
+
+    @GetMapping("/{id}/active")
+    ResponseEntity<BarDTO> active(@PathVariable("id") Long id){
+        return this.service.active(id);
     }
 }

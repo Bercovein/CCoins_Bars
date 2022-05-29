@@ -7,6 +7,8 @@ public class ExceptionConstant {
     public static final String GET_ERROR_LABEL = ERROR_LABEL.concat("get ");
     public static final String CREATE_NEW_ERROR_LABEL = ERROR_LABEL.concat("create new ");
 
+    public static final String UPDATE_ERROR_LABEL = ERROR_LABEL.concat("update ");
+
     public static final String CREATE_OR_REPLACE_ERROR_LABEL = ERROR_LABEL.concat("create or replace ");
 
     //ERRORS
@@ -21,6 +23,20 @@ public class ExceptionConstant {
 
     public static final String BAR_FIND_BY_ID_ERROR_CODE = "0004";
     public static final String BAR_FIND_BY_ID_ERROR = GET_ERROR_LABEL.concat("bar by id");
+
+    public static final String TABLE_FIND_BAR_BY_ID_ERROR_CODE = "0005";
+    public static final String TABLE_FIND_BAR_BY_ID_ERROR = BAR_FIND_BY_ID_ERROR;
+
+    public static final String TABLE_FIND_BY_OWNER_ERROR_CODE = "0006";
+    public static final String TABLE_FIND_BY_OWNER_ERROR = GET_ERROR_LABEL.concat("tables by bars");
+
+
+    public static final String TABLE_FIND_BY_ID_ERROR_CODE = "0007";
+    public static final String TABLE_FIND_BY_ID_ERROR = GET_ERROR_LABEL.concat("table by id");
+
+
+    public static final String TABLE_UPDATE_ACTIVE_ERROR_CODE = "0008";
+    public static final String TABLE_UPDATE_ACTIVE_ERROR = UPDATE_ERROR_LABEL.concat("table state");
 
 
 }

@@ -10,4 +10,6 @@ public interface IBarsService {
     ResponseEntity<ListDTO> findAllByOwner(Long ownerId);
 
     ResponseEntity<BarDTO> findById(Long id);
+
+    ResponseEntity<BarDTO> active(Long id);
 }

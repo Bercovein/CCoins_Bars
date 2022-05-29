@@ -23,7 +23,7 @@ public class Table {
     @Column(name="number")
     private Long number;
 
-    @Column(name="active")
+    @Column(name="active", columnDefinition = "boolean default true")
     private boolean active;
 
     @ManyToOne(fetch = FetchType.LAZY)

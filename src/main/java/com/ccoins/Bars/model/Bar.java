@@ -30,6 +30,9 @@ public class Bar {
     @Column(name="menu_link")
     private String menuLink;
 
+    @Column(name="active", columnDefinition = "boolean default true")
+    private boolean active;
+
     @Column(name="fk_owner")
     private Long owner;
 }

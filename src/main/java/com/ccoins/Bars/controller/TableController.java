@@ -33,7 +33,7 @@ public class TableController {
         return this.service.findById(id);
     }
 
-    @GetMapping("/{id}/active")
+    @PatchMapping("/{id}/active")
     ResponseEntity<TableDTO> active(@PathVariable("id") Long id){
         return this.service.active(id);
     }

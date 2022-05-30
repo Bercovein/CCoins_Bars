@@ -70,7 +70,7 @@ public class TableService implements ITableService {
 
             if(tableOpt.isPresent()){
                 List<Table> tables = tableOpt.get();
-                response.setList((List<TableDTO>)MapperUtils.map(tables, TableDTO.class));
+                response.setList(MapperUtils.mapList(tables, TableDTO.class));
             }
 
             return ResponseEntity.ok(response);

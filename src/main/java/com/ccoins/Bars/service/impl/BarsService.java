@@ -49,7 +49,7 @@ public class BarsService implements IBarsService {
 
             if(barsOpt.isPresent()){
                 List<Bar> bars = barsOpt.get();
-                response.setList((List<BarDTO>)MapperUtils.map(bars, BarDTO.class));
+                response.setList(MapperUtils.mapList(bars, BarDTO.class));
             }
 
             return ResponseEntity.ok(response);

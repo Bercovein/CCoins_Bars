@@ -33,7 +33,7 @@ public class BarsController {
         return this.service.findById(id);
     }
 
-    @PatchMapping("/{id}/active")
+    @PutMapping("/{id}/active")
     ResponseEntity<BarDTO> active(@PathVariable("id") Long id){
         return this.service.active(id);
     }

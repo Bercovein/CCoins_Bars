@@ -5,7 +5,6 @@ import com.ccoins.Bars.dto.TableDTO;
 import com.ccoins.Bars.exceptions.ObjectNotFoundException;
 import com.ccoins.Bars.exceptions.UnauthorizedException;
 import com.ccoins.Bars.exceptions.constant.ExceptionConstant;
-import com.ccoins.Bars.exceptions.utils.ErrorUtils;
 import com.ccoins.Bars.model.Bar;
 import com.ccoins.Bars.model.Table;
 import com.ccoins.Bars.repository.IBarsRepository;
@@ -56,7 +55,6 @@ public class TableService implements ITableService {
             table = this.repository.save(table);
             return ResponseEntity.ok((TableDTO)MapperUtils.map(table,TableDTO.class));
         }catch(Exception e){
-            log.error(ErrorUtils.parseMethodError(this.getClass()));
             throw new UnauthorizedException(ExceptionConstant.BAR_CREATE_OR_UPDATE_ERROR_CODE, this.getClass(),
                     ExceptionConstant.BAR_CREATE_OR_UPDATE_ERROR);
         }
@@ -77,7 +75,6 @@ public class TableService implements ITableService {
 
             return ResponseEntity.ok(response);
         }catch(Exception e){
-            log.error(ErrorUtils.parseMethodError(this.getClass()));
             throw new UnauthorizedException(ExceptionConstant.TABLE_FIND_BY_OWNER_ERROR_CODE,
                     this.getClass(),
                     ExceptionConstant.TABLE_FIND_BY_OWNER_ERROR);
@@ -91,7 +88,6 @@ public class TableService implements ITableService {
             Optional<Table> table = this.repository.findById(id);
             return ResponseEntity.ok((TableDTO)MapperUtils.map(table,TableDTO.class));
         }catch(Exception e){
-            log.error(ErrorUtils.parseMethodError(this.getClass()));
             throw new UnauthorizedException(ExceptionConstant.TABLE_FIND_BY_ID_ERROR_CODE,
                     this.getClass(), ExceptionConstant.TABLE_FIND_BY_ID_ERROR);
         }
@@ -102,7 +98,6 @@ public class TableService implements ITableService {
         try {
             this.repository.updateActive(id);
         }catch(Exception e){
-            log.error(ErrorUtils.parseMethodError(this.getClass()));
             throw new UnauthorizedException(ExceptionConstant.TABLE_UPDATE_ACTIVE_ERROR_CODE,
                     this.getClass(), ExceptionConstant.TABLE_UPDATE_ACTIVE_ERROR);
         }

@@ -10,6 +10,5 @@ public interface ITableService {
     ResponseEntity<ListDTO> findAllByBar(Long barId);
 
     ResponseEntity<TableDTO> findById(Long id);
-
     ResponseEntity<TableDTO> active(Long id);
 }

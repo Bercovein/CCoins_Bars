@@ -79,8 +79,8 @@ public class BarsService implements IBarsService {
             this.repository.updateActive(id);
         }catch(Exception e){
             e.printStackTrace();
-            throw new UnauthorizedException(ExceptionConstant.TABLE_UPDATE_ACTIVE_ERROR_CODE,
-                    this.getClass(), ExceptionConstant.TABLE_UPDATE_ACTIVE_ERROR);
+            throw new UnauthorizedException(ExceptionConstant.BAR_UPDATE_ACTIVE_ERROR_CODE,
+                    this.getClass(), ExceptionConstant.BAR_UPDATE_ACTIVE_ERROR);
         }
         return this.findById(id);
     }

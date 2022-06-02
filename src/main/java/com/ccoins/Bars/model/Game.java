@@ -34,7 +34,7 @@ public class Game {
     @Column(name="start_date")
     private LocalDateTime startDate;
 
-    @Column(name="start_date")
+    @Column(name="end_date")
     private LocalDateTime endDate;
 
     @Column(name="active", columnDefinition = "boolean default true")

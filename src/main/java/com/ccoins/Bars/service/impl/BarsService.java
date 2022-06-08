@@ -36,7 +36,8 @@ public class BarsService implements IBarsService {
             Bar bar = this.repository.save(this.convert(barDTO));
             return ResponseEntity.ok(this.convert(bar));
         }catch(Exception e){
-            throw new UnauthorizedException(ExceptionConstant.BAR_CREATE_ERROR_CODE, this.getClass(), ExceptionConstant.BAR_CREATE_ERROR);
+            throw new UnauthorizedException(ExceptionConstant.BAR_CREATE_OR_UPDATE_ERROR_CODE,
+                    this.getClass(), ExceptionConstant.BAR_CREATE_OR_UPDATE_ERROR);
         }
     }
 

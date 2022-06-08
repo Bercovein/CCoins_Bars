@@ -5,6 +5,7 @@ import com.ccoins.Bars.dto.ListDTO;
 import com.ccoins.Bars.exceptions.UnauthorizedException;
 import com.ccoins.Bars.exceptions.constant.ExceptionConstant;
 import com.ccoins.Bars.model.Bar;
+import com.ccoins.Bars.model.projection.IPBar;
 import com.ccoins.Bars.repository.IBarsRepository;
 import com.ccoins.Bars.service.IBarsService;
 import com.ccoins.Bars.utils.MapperUtils;
@@ -32,12 +33,13 @@ public class BarsService implements IBarsService {
     public ResponseEntity<BarDTO> saveOrUpdate(BarDTO barDTO) {
 
         try {
-            Bar bar = this.repository.save((Bar)MapperUtils.map(barDTO,Bar.class));
-            return ResponseEntity.ok((BarDTO)MapperUtils.map(bar,BarDTO.class));
+            Bar bar = this.repository.save(this.convert(barDTO));
+            return ResponseEntity.ok(this.convert(bar));
         }catch(Exception e){
-            throw new UnauthorizedException(ExceptionConstant.BAR_CREATE_OR_UPDATE_ERROR_CODE, this.getClass(), ExceptionConstant.BAR_CREATE_OR_UPDATE_ERROR);
+            throw new UnauthorizedException(ExceptionConstant.BAR_CREATE_ERROR_CODE, this.getClass(), ExceptionConstant.BAR_CREATE_ERROR);
         }
     }
+
 
     @Override
     public ResponseEntity<ListDTO> findAllByOwner(Long ownerId) {
@@ -45,11 +47,10 @@ public class BarsService implements IBarsService {
         ListDTO response = new ListDTO(new ArrayList<>());
 
         try {
-            Optional<List<Bar>> barsOpt = this.repository.findByOwner(ownerId);
+            Optional<List<IPBar>> barsOpt = this.repository.findByOwner(ownerId);
 
             if(barsOpt.isPresent()){
-                List<Bar> bars = barsOpt.get();
-                response.setList(MapperUtils.mapList(bars, BarDTO.class));
+                response.setList(barsOpt.get());
             }
 
             return ResponseEntity.ok(response);
@@ -65,7 +66,7 @@ public class BarsService implements IBarsService {
 
         try {
             Optional<Bar> bar = this.repository.findById(id);
-            return ResponseEntity.ok((BarDTO)MapperUtils.map(bar,BarDTO.class));
+            return ResponseEntity.ok(this.convert(bar.get()));
         }catch(Exception e){
             throw new UnauthorizedException(ExceptionConstant.BAR_FIND_BY_ID_ERROR_CODE,
                     this.getClass(), ExceptionConstant.BAR_FIND_BY_ID_ERROR);
@@ -83,5 +84,13 @@ public class BarsService implements IBarsService {
                     this.getClass(), ExceptionConstant.BAR_UPDATE_ACTIVE_ERROR);
         }
         return this.findById(id);
+    }
+
+    private Bar convert(BarDTO barDTO){
+        return (Bar)MapperUtils.map(barDTO,Bar.class);
+    }
+
+    private BarDTO convert(Bar bar){
+        return (BarDTO)MapperUtils.map(bar,BarDTO.class);
     }
 }

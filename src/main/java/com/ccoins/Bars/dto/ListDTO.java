@@ -15,5 +15,4 @@ public class ListDTO {
 
    private List<?> list;
 
-
 }

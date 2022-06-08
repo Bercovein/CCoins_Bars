@@ -1,6 +1,7 @@
 package com.ccoins.Bars.repository;
 
 import com.ccoins.Bars.model.Bar;
+import com.ccoins.Bars.model.projection.IPBar;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -16,7 +17,7 @@ public interface IBarsRepository extends JpaRepository<Bar, Long> {
 
     Bar save(Bar bar);
 
-    Optional<List<Bar>> findByOwner(Long ownerId);
+    Optional<List<IPBar>> findByOwner(Long ownerId);
 
     @Transactional
     @Modifying

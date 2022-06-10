@@ -1,7 +1,9 @@
 package com.ccoins.Bars.controller;
 
 import com.ccoins.Bars.dto.ListDTO;
+import com.ccoins.Bars.dto.ResponseDTO;
 import com.ccoins.Bars.dto.TableDTO;
+import com.ccoins.Bars.dto.TableQuantityDTO;
 import com.ccoins.Bars.service.ITableService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,11 @@ public class TableController {
     @PostMapping
     ResponseEntity<TableDTO> saveOrUpdate(@RequestBody TableDTO tableDTO){
         return this.service.saveOrUpdate(tableDTO);
+    }
+
+    @PostMapping("/quantity")
+    public ResponseEntity<ResponseDTO> createByQuantity(@RequestBody TableQuantityDTO request){
+        return this.service.createByQuantity(request);
     }
 
     @GetMapping("/bar/{barId}")

@@ -26,6 +26,9 @@ public class Table {
     @Column(name="active", columnDefinition = "boolean default true")
     private boolean active;
 
+    @Column(name="code")
+    private String qrCode;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_bar", referencedColumnName = "id")
     private Bar bar;

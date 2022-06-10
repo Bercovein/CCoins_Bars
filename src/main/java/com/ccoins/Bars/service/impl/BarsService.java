@@ -41,7 +41,6 @@ public class BarsService implements IBarsService {
         }
     }
 
-
     @Override
     public ResponseEntity<ListDTO> findAllByOwner(Long ownerId) {
 

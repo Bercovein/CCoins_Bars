@@ -1,7 +1,7 @@
 package com.ccoins.Bars.service.impl;
 
-import com.ccoins.Bars.dto.ListDTO;
-import com.ccoins.Bars.dto.TableDTO;
+import com.ccoins.Bars.dto.*;
+import com.ccoins.Bars.exceptions.BadRequestException;
 import com.ccoins.Bars.exceptions.ObjectNotFoundException;
 import com.ccoins.Bars.exceptions.UnauthorizedException;
 import com.ccoins.Bars.exceptions.constant.ExceptionConstant;
@@ -11,6 +11,7 @@ import com.ccoins.Bars.repository.IBarsRepository;
 import com.ccoins.Bars.repository.ITableRepository;
 import com.ccoins.Bars.service.ITableService;
 import com.ccoins.Bars.utils.MapperUtils;
+import com.ccoins.Bars.utils.QRUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.ccoins.Bars.exceptions.constant.ExceptionConstant.TABLE_FIND_BAR_BY_ID_ERROR_CODE;
+import static com.ccoins.Bars.utils.ResponseMessages.SUCCESS_CODE;
+import static com.ccoins.Bars.utils.ResponseMessages.TABLES_CREATED_BY_QUANTITY;
 
 @Service
 @Slf4j
@@ -102,5 +105,61 @@ public class TableService implements ITableService {
                     this.getClass(), ExceptionConstant.TABLE_UPDATE_ACTIVE_ERROR);
         }
         return this.findById(id);
+    }
+
+    @Override
+    public ResponseEntity<ResponseDTO> createByQuantity(TableQuantityDTO request) {
+
+        Bar bar;
+        List<Table> list = new ArrayList<>();
+        Long quantity = request.getQuantity();
+        Long actual;
+
+        try {
+            bar = this.barRepository.getById(request.getBar());
+        }catch(Exception e){
+            throw new UnauthorizedException(ExceptionConstant.BAR_FIND_BY_ID_ERROR_CODE,
+                    this.getClass(), ExceptionConstant.BAR_FIND_BY_ID_ERROR);
+        }
+
+        actual = this.countByBar(bar.getId());
+
+        for (long i = actual + 1; i < actual + quantity + 1; i++) {
+
+            Table table = Table.builder().bar(bar).number(i).active(true).build();
+            table = this.generateNewCode(table);
+
+            list.add(table);
+        }
+
+        this.saveAll(list);
+
+        return ResponseEntity.ok(new GenericRsDTO<>(SUCCESS_CODE,String.format(TABLES_CREATED_BY_QUANTITY,quantity),null));
+    }
+
+    @Override
+    public Table generateNewCode(Table table){
+        table.setQrCode(QRUtils.generateCode());
+        return table;
+    }
+
+    @Override
+    public void saveAll(List<Table> list){
+        try {
+            this.repository.saveAll(list);
+        }catch(Exception e){
+            throw new UnauthorizedException(ExceptionConstant.TABLE_CREATE_LIST_ERROR_CODE,
+                    this.getClass(), ExceptionConstant.TABLE_CREATE_LIST_ERROR);
+        }
+    }
+
+    @Override
+    public Long countByBar(Long bar){
+        try {
+            return this.repository.countByBarId(bar);
+        }catch(Exception e){
+            throw new BadRequestException(ExceptionConstant.TABLE_COUNT_BY_BAR_ERROR_CODE,
+                    this.getClass(), ExceptionConstant.TABLE_COUNT_BY_BAR_ERROR);
+        }
     }
 }

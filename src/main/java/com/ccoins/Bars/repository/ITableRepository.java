@@ -20,4 +20,7 @@ public interface ITableRepository extends JpaRepository<Table, Long> {
     @Modifying
     @Query(value = "UPDATE Tables set active = IF(active IS TRUE, FALSE, TRUE) where id = :id",nativeQuery = true)
     int updateActive(@Param("id") Long id);
+
+//    @Query("SELECT COUNT(t) from Table t where t.bar.id = :bar")
+    Long countByBarId(Long bar);
 }

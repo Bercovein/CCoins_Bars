@@ -13,7 +13,7 @@
 	<version>1.0.0</version>
 	<name>Bars</name>
 	<description>Demo project for Spring Boot</description>
-	<packaging>war</packaging>
+<!--	<packaging>war</packaging>-->
 	<properties>
 		<java.version>11</java.version>
 		<app.name>bars-app</app.name>
@@ -75,12 +75,20 @@
 			<scope>runtime</scope>
 		</dependency>
 
-		<!-- TOMCAT -->
+<!--		&lt;!&ndash; TOMCAT &ndash;&gt;-->
+<!--		<dependency>-->
+<!--			<groupId>org.springframework.boot</groupId>-->
+<!--			<artifactId>spring-boot-starter-tomcat</artifactId>-->
+<!--			<scope>provided</scope>-->
+<!--		</dependency>-->
+
+		<!-- GUAVA TO ENCODE -->
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-tomcat</artifactId>
-			<scope>provided</scope>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>31.1-jre</version>
 		</dependency>
+
 	</dependencies>
 
 	<build>

@@ -6,6 +6,8 @@ public class ExceptionConstant {
     public static final String ERROR_LABEL = "Error when trying to ";
     public static final String GET_ERROR_LABEL = ERROR_LABEL.concat("get ");
     public static final String CREATE_NEW_ERROR_LABEL = ERROR_LABEL.concat("create new ");
+    public static final String COUNT_ERROR_LABEL = ERROR_LABEL.concat("count ");
+    public static final String GENERATE_ERROR_LABEL = ERROR_LABEL.concat("generate new ");
 
     public static final String UPDATE_ERROR_LABEL = ERROR_LABEL.concat("update ");
 
@@ -50,8 +52,18 @@ public class ExceptionConstant {
     public static final String BAR_UPDATE_ACTIVE_ERROR_CODE = "0012";
     public static final String BAR_UPDATE_ACTIVE_ERROR = UPDATE_ERROR_LABEL.concat("bar state");
 
-    public static final String GAME_UPDATE_ACTIVE_ERROR_CODE = "00113";
+    public static final String GAME_UPDATE_ACTIVE_ERROR_CODE = "0013";
     public static final String GAME_UPDATE_ACTIVE_ERROR = UPDATE_ERROR_LABEL.concat("game state");
+
+    public static final String QR_CODE_GENERATION_ERROR_CODE = "0014";
+    public static final String QR_CODE_GENERATION_ERROR = GENERATE_ERROR_LABEL.concat("qr code");
+
+
+    public static final String TABLE_CREATE_LIST_ERROR_CODE = "0015";
+    public static final String TABLE_CREATE_LIST_ERROR = CREATE_NEW_ERROR_LABEL.concat("table list");
+
+    public static final String TABLE_COUNT_BY_BAR_ERROR_CODE = "0016";
+    public static final String TABLE_COUNT_BY_BAR_ERROR = COUNT_ERROR_LABEL.concat("table by bar");
 
 
 }

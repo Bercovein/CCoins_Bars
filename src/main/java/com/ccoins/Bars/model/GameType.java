@@ -12,7 +12,7 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Entity
+@Entity(name = "GameType")
 @Table(name = "GAMES_TYPES")
 public class GameType {
 

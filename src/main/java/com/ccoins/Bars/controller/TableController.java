@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/tables")
 public class TableController {
@@ -30,9 +32,12 @@ public class TableController {
         return this.service.createByQuantity(request);
     }
 
-    @GetMapping("/bar/{barId}")
-    ResponseEntity<ListDTO> findAllByBar(@PathVariable("barId") Long barId) {
-        return this.service.findAllByBar(barId);
+    @GetMapping({"/bar/{barId}", "/bar/{barId}/{status}"})
+    ResponseEntity<ListDTO> findAllByBarAndOptStatus(
+            @PathVariable("barId") Long barId,
+            @PathVariable("status") Optional<String> status)
+    {
+        return this.service.findAllByBarAndOptStatus(barId, status);
     }
 
     @GetMapping("/{id}")

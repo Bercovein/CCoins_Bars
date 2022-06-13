@@ -1,6 +1,7 @@
 package com.ccoins.Bars.repository;
 
-import com.ccoins.Bars.model.Table;
+import com.ccoins.Bars.model.BarTable;
+import com.ccoins.Bars.model.projection.IPBarTable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -12,9 +13,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ITableRepository extends JpaRepository<Table, Long> {
+public interface ITableRepository extends JpaRepository<BarTable, Long> {
 
-    Optional<List<Table>> findByBar(Long barId);
+    Optional<List<IPBarTable>> findByBarId(Long bar);
+
+    Optional<List<IPBarTable>> findByBarIdAndActive(Long barId, boolean state);
 
     @Transactional
     @Modifying
@@ -23,4 +26,6 @@ public interface ITableRepository extends JpaRepository<Table, Long> {
 
 //    @Query("SELECT COUNT(t) from Table t where t.bar.id = :bar")
     Long countByBarId(Long bar);
+
+
 }

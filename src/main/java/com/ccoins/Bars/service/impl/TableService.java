@@ -6,12 +6,14 @@ import com.ccoins.Bars.exceptions.ObjectNotFoundException;
 import com.ccoins.Bars.exceptions.UnauthorizedException;
 import com.ccoins.Bars.exceptions.constant.ExceptionConstant;
 import com.ccoins.Bars.model.Bar;
-import com.ccoins.Bars.model.Table;
+import com.ccoins.Bars.model.BarTable;
+import com.ccoins.Bars.model.projection.IPBarTable;
 import com.ccoins.Bars.repository.IBarsRepository;
 import com.ccoins.Bars.repository.ITableRepository;
 import com.ccoins.Bars.service.ITableService;
 import com.ccoins.Bars.utils.MapperUtils;
 import com.ccoins.Bars.utils.QRUtils;
+import com.ccoins.Bars.utils.StateUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -43,10 +45,10 @@ public class TableService implements ITableService {
     public ResponseEntity<TableDTO> saveOrUpdate(TableDTO tableDTO) {
 
         Optional<Bar> barOpt;
-        Table table;
+        BarTable table;
 
         try {
-            table = (Table) MapperUtils.map(tableDTO, Table.class);
+            table = (BarTable) MapperUtils.map(tableDTO, BarTable.class);
             barOpt = this.barRepository.findById(tableDTO.getBar());
 
             if(barOpt.isEmpty()){
@@ -64,17 +66,22 @@ public class TableService implements ITableService {
     }
 
     @Override
-    public ResponseEntity<ListDTO> findAllByBar(Long barId) {
+    public ResponseEntity<ListDTO> findAllByBarAndOptStatus(Long barId, Optional<String> status) {
 
         ListDTO response = new ListDTO(new ArrayList<>());
-
+        Optional<List<IPBarTable>> tableOpt;
         try {
-            Optional<List<Table>> tableOpt = this.repository.findByBar(barId);
 
-            if(tableOpt.isPresent()){
-                List<Table> tables = tableOpt.get();
-                response.setList(MapperUtils.mapList(tables, TableDTO.class));
+            if(status.isPresent()){
+
+                boolean state = StateUtils.isActive(status.get());
+
+                tableOpt = this.repository.findByBarIdAndActive(barId, state);
+            }else{
+                tableOpt = this.repository.findByBarId(barId);
             }
+
+            tableOpt.ifPresent(response::setList);
 
             return ResponseEntity.ok(response);
         }catch(Exception e){
@@ -88,7 +95,7 @@ public class TableService implements ITableService {
     public ResponseEntity<TableDTO> findById(Long id) {
 
         try {
-            Optional<Table> table = this.repository.findById(id);
+            Optional<BarTable> table = this.repository.findById(id);
             return ResponseEntity.ok((TableDTO)MapperUtils.map(table,TableDTO.class));
         }catch(Exception e){
             throw new UnauthorizedException(ExceptionConstant.TABLE_FIND_BY_ID_ERROR_CODE,
@@ -111,7 +118,7 @@ public class TableService implements ITableService {
     public ResponseEntity<ResponseDTO> createByQuantity(TableQuantityDTO request) {
 
         Bar bar;
-        List<Table> list = new ArrayList<>();
+        List<BarTable> list = new ArrayList<>();
         Long quantity = request.getQuantity();
         Long actual;
 
@@ -126,7 +133,7 @@ public class TableService implements ITableService {
 
         for (long i = actual + 1; i < actual + quantity + 1; i++) {
 
-            Table table = Table.builder().bar(bar).number(i).active(true).build();
+            BarTable table = BarTable.builder().bar(bar).number(i).active(true).build();
             table = this.generateNewCode(table);
 
             list.add(table);
@@ -138,13 +145,13 @@ public class TableService implements ITableService {
     }
 
     @Override
-    public Table generateNewCode(Table table){
+    public BarTable generateNewCode(BarTable table){
         table.setQrCode(QRUtils.generateCode());
         return table;
     }
 
     @Override
-    public void saveAll(List<Table> list){
+    public void saveAll(List<BarTable> list){
         try {
             this.repository.saveAll(list);
         }catch(Exception e){

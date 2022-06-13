@@ -4,17 +4,17 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
 
-import javax.persistence.Table;
 import javax.persistence.*;
 import java.time.LocalDateTime;
+
+import static com.ccoins.Bars.utils.DateUtils.AUTO_DATE;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Entity
+@Entity(name = "Bar")
 @Table(name = "BARS")
 public class Bar {
 
@@ -38,7 +38,7 @@ public class Bar {
     @Column(name="fk_owner")
     private Long owner;
 
-    @CreatedDate
-    @Column(name="start_date")
+    @Column(name="start_date",insertable = false, updatable = false,
+            columnDefinition = AUTO_DATE)
     private LocalDateTime startDate;
 }

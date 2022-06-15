@@ -75,13 +75,6 @@
 			<scope>runtime</scope>
 		</dependency>
 
-<!--		&lt;!&ndash; TOMCAT &ndash;&gt;-->
-<!--		<dependency>-->
-<!--			<groupId>org.springframework.boot</groupId>-->
-<!--			<artifactId>spring-boot-starter-tomcat</artifactId>-->
-<!--			<scope>provided</scope>-->
-<!--		</dependency>-->
-
 		<!-- GUAVA TO ENCODE -->
 		<dependency>
 			<groupId>com.google.guava</groupId>
@@ -89,8 +82,14 @@
 			<version>31.1-jre</version>
 		</dependency>
 
-	</dependencies>
+		<!--		&lt;!&ndash; TOMCAT &ndash;&gt;-->
+<!--		<dependency>-->
+<!--			<groupId>org.springframework.boot</groupId>-->
+<!--			<artifactId>spring-boot-starter-tomcat</artifactId>-->
+<!--			<scope>provided</scope>-->
+<!--		</dependency>-->
 
+	</dependencies>
 	<build>
 		<finalName>${app.name}</finalName>
 		<plugins>

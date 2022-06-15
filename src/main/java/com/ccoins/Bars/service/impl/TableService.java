@@ -12,10 +12,11 @@ import com.ccoins.Bars.repository.IBarsRepository;
 import com.ccoins.Bars.repository.ITableRepository;
 import com.ccoins.Bars.service.ITableService;
 import com.ccoins.Bars.utils.MapperUtils;
-import com.ccoins.Bars.utils.QRUtils;
+import com.ccoins.Bars.utils.EncodeUtils;
 import com.ccoins.Bars.utils.StateUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -24,8 +25,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.ccoins.Bars.exceptions.constant.ExceptionConstant.TABLE_FIND_BAR_BY_ID_ERROR_CODE;
-import static com.ccoins.Bars.utils.ResponseMessages.SUCCESS_CODE;
-import static com.ccoins.Bars.utils.ResponseMessages.TABLES_CREATED_BY_QUANTITY;
+import static com.ccoins.Bars.utils.ResponseMessages.*;
 
 @Service
 @Slf4j
@@ -34,6 +34,9 @@ public class TableService implements ITableService {
     private final ITableRepository repository;
 
     private final IBarsRepository barRepository;
+
+    @Value("")
+    private String API_URL;
 
     @Autowired
     public TableService(ITableRepository repository, IBarsRepository barRepository) {
@@ -122,12 +125,7 @@ public class TableService implements ITableService {
         Long quantity = request.getQuantity();
         Long actual;
 
-        try {
-            bar = this.barRepository.getById(request.getBar());
-        }catch(Exception e){
-            throw new UnauthorizedException(ExceptionConstant.BAR_FIND_BY_ID_ERROR_CODE,
-                    this.getClass(), ExceptionConstant.BAR_FIND_BY_ID_ERROR);
-        }
+        bar = this.getBarById(request.getBar());
 
         actual = this.countByBar(bar.getId());
 
@@ -146,7 +144,7 @@ public class TableService implements ITableService {
 
     @Override
     public BarTable generateNewCode(BarTable table){
-        table.setQrCode(QRUtils.generateCode());
+        table.setQrCode(EncodeUtils.generateCode());
         return table;
     }
 
@@ -167,6 +165,43 @@ public class TableService implements ITableService {
         }catch(Exception e){
             throw new BadRequestException(ExceptionConstant.TABLE_COUNT_BY_BAR_ERROR_CODE,
                     this.getClass(), ExceptionConstant.TABLE_COUNT_BY_BAR_ERROR);
+        }
+    }
+
+
+    private Bar getBarById(Long request){
+        try {
+            return this.barRepository.getById(request);
+        }catch(Exception e){
+            throw new UnauthorizedException(ExceptionConstant.BAR_FIND_BY_ID_ERROR_CODE,
+                    this.getClass(), ExceptionConstant.BAR_FIND_BY_ID_ERROR);
+        }
+    }
+
+    @Override
+    public ResponseEntity<ResponseDTO> deleteByQuantity(TableQuantityDTO request) {
+
+        Optional<List<BarTable>> listOpt;
+        Long quantity = request.getQuantity();
+        List<BarTable> list;
+
+        try {
+
+            listOpt = this.repository.findByBarIdOrderByIdDescLimit(request.getBar(), request.getQuantity());
+
+            if (listOpt.isPresent()) {
+                list = listOpt.get();
+
+                this.repository.deleteAllInBatch(list);
+            } else {
+                return ResponseEntity.ok(new GenericRsDTO<>(SUCCESS_CODE, String.format(TABLES_DELETED_BY_QUANTITY, 0), null));
+            }
+
+            return ResponseEntity.ok(new GenericRsDTO<>(SUCCESS_CODE, String.format(TABLES_DELETED_BY_QUANTITY, quantity), null));
+
+        }catch(Exception e){
+            throw new BadRequestException(ExceptionConstant.TABLE_DELETE_BY_QUANTITY_ERROR_CODE,
+                    this.getClass(), ExceptionConstant.TABLE_DELETE_BY_QUANTITY_ERROR);
         }
     }
 }

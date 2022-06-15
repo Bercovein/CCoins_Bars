@@ -13,6 +13,8 @@ public class ExceptionConstant {
 
     public static final String CREATE_OR_REPLACE_ERROR_LABEL = ERROR_LABEL.concat("create or replace ");
 
+    public static final String DELETE_ERROR_LABEL = ERROR_LABEL.concat("delete ");
+
     //ERRORS
     public static final String GENERIC_ERROR_CODE = "0001";
     public static final String GENERIC_ERROR = "Something went wrong! Check with your administrator";
@@ -36,7 +38,6 @@ public class ExceptionConstant {
     public static final String TABLE_FIND_BY_ID_ERROR_CODE = "0007";
     public static final String TABLE_FIND_BY_ID_ERROR = GET_ERROR_LABEL.concat("table by id");
 
-
     public static final String TABLE_UPDATE_ACTIVE_ERROR_CODE = "0008";
     public static final String TABLE_UPDATE_ACTIVE_ERROR = UPDATE_ERROR_LABEL.concat("table state");
 
@@ -58,12 +59,15 @@ public class ExceptionConstant {
     public static final String QR_CODE_GENERATION_ERROR_CODE = "0014";
     public static final String QR_CODE_GENERATION_ERROR = GENERATE_ERROR_LABEL.concat("qr code");
 
-
     public static final String TABLE_CREATE_LIST_ERROR_CODE = "0015";
     public static final String TABLE_CREATE_LIST_ERROR = CREATE_NEW_ERROR_LABEL.concat("table list");
 
     public static final String TABLE_COUNT_BY_BAR_ERROR_CODE = "0016";
     public static final String TABLE_COUNT_BY_BAR_ERROR = COUNT_ERROR_LABEL.concat("table by bar");
+
+
+    public static final String TABLE_DELETE_BY_QUANTITY_ERROR_CODE = "0017";
+    public static final String TABLE_DELETE_BY_QUANTITY_ERROR = DELETE_ERROR_LABEL.concat("table by quantity");
 
 
 }

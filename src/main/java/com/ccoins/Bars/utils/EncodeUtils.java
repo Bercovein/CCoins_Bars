@@ -7,7 +7,7 @@ import com.google.common.hash.Hashing;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 
-public class QRUtils {
+public class EncodeUtils {
 
     public static String generateCode(){
 
@@ -21,7 +21,7 @@ public class QRUtils {
                     .toString();
         }catch(Exception e){
             throw new BadRequestException(ExceptionConstant.QR_CODE_GENERATION_ERROR_CODE,
-                    QRUtils.class, ExceptionConstant.QR_CODE_GENERATION_ERROR);
+                    EncodeUtils.class, ExceptionConstant.QR_CODE_GENERATION_ERROR);
         }
     }
 }

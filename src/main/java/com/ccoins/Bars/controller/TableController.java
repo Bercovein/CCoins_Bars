@@ -32,6 +32,11 @@ public class TableController {
         return this.service.createByQuantity(request);
     }
 
+    @DeleteMapping("/quantity")
+    public ResponseEntity<ResponseDTO> deleteByQuantity(@RequestBody TableQuantityDTO request){
+        return this.service.deleteByQuantity(request);
+    }
+
     @GetMapping({"/bar/{barId}", "/bar/{barId}/{status}"})
     ResponseEntity<ListDTO> findAllByBarAndOptStatus(
             @PathVariable("barId") Long barId,
@@ -49,4 +54,5 @@ public class TableController {
     ResponseEntity<TableDTO> active(@PathVariable("id") Long id){
         return this.service.active(id);
     }
+
 }

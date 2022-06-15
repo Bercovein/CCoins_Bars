@@ -1,9 +1,6 @@
 package com.ccoins.Bars.service;
 
-import com.ccoins.Bars.dto.ListDTO;
-import com.ccoins.Bars.dto.ResponseDTO;
-import com.ccoins.Bars.dto.TableDTO;
-import com.ccoins.Bars.dto.TableQuantityDTO;
+import com.ccoins.Bars.dto.*;
 import com.ccoins.Bars.model.BarTable;
 import org.springframework.http.ResponseEntity;
 
@@ -25,4 +22,6 @@ public interface ITableService {
     void saveAll(List<BarTable> list);
 
     Long countByBar(Long bar);
+
+    ResponseEntity<ResponseDTO> deleteByQuantity(TableQuantityDTO request);
 }

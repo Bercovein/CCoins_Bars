@@ -11,12 +11,11 @@ import com.ccoins.Bars.model.projection.IPBarTable;
 import com.ccoins.Bars.repository.IBarsRepository;
 import com.ccoins.Bars.repository.ITableRepository;
 import com.ccoins.Bars.service.ITableService;
-import com.ccoins.Bars.utils.MapperUtils;
 import com.ccoins.Bars.utils.EncodeUtils;
+import com.ccoins.Bars.utils.MapperUtils;
 import com.ccoins.Bars.utils.StateUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -35,8 +34,6 @@ public class TableService implements ITableService {
 
     private final IBarsRepository barRepository;
 
-    @Value("")
-    private String API_URL;
 
     @Autowired
     public TableService(ITableRepository repository, IBarsRepository barRepository) {
@@ -97,9 +94,21 @@ public class TableService implements ITableService {
     @Override
     public ResponseEntity<TableDTO> findById(Long id) {
 
+        TableDTO response = null;
+
         try {
             Optional<BarTable> table = this.repository.findById(id);
-            return ResponseEntity.ok((TableDTO)MapperUtils.map(table,TableDTO.class));
+
+            if(table.isPresent()){
+                BarTable tbl = table.get();
+                response = TableDTO.builder().id(tbl.getId())
+                        .active(tbl.isActive())
+                        .bar(tbl.getBar().getId())
+                        .number(tbl.getNumber())
+                        .build();
+            }
+
+            return ResponseEntity.ok(response);
         }catch(Exception e){
             throw new UnauthorizedException(ExceptionConstant.TABLE_FIND_BY_ID_ERROR_CODE,
                     this.getClass(), ExceptionConstant.TABLE_FIND_BY_ID_ERROR);

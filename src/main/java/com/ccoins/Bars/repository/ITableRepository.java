@@ -30,4 +30,6 @@ public interface ITableRepository extends JpaRepository<BarTable, Long> {
 
     @Query(value = "select t.* FROM bar_tables t WHERE t.fk_bar = :bar ORDER BY t.id DESC LIMIT :limit", nativeQuery = true)
     Optional<List<BarTable>> findByBarIdOrderByIdDescLimit(Long bar, Long limit);
+
+    Optional<BarTable> findById(Long id);
 }

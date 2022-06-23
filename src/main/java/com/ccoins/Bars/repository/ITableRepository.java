@@ -32,4 +32,5 @@ public interface ITableRepository extends JpaRepository<BarTable, Long> {
     Optional<List<BarTable>> findByBarIdOrderByIdDescLimit(Long bar, Long limit);
 
     Optional<BarTable> findById(Long id);
+
 }

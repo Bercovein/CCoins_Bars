@@ -8,18 +8,18 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ITableService {
-    ResponseEntity<TableDTO> saveOrUpdate(TableDTO tableDTO);
+    ResponseEntity<BarTableDTO> saveOrUpdate(BarTableDTO barTableDTO);
 
     ResponseEntity<ListDTO> findAllByBarAndOptStatus(Long barId, Optional<String> status);
 
-    ResponseEntity<TableDTO> findById(Long id);
-    ResponseEntity<TableDTO> active(Long id);
+    ResponseEntity<BarTableDTO> findById(Long id);
+    ResponseEntity<BarTableDTO> active(Long id);
 
     ResponseEntity<ResponseDTO> createByQuantity(TableQuantityDTO request);
 
     BarTable generateNewCode(BarTable table);
 
-    void saveAll(List<BarTable> list);
+    List<BarTable> saveAll(List<BarTable> list);
 
     Long countByBar(Long bar);
 

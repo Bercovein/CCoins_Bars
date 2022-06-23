@@ -2,7 +2,7 @@ package com.ccoins.Bars.controller;
 
 import com.ccoins.Bars.dto.ListDTO;
 import com.ccoins.Bars.dto.ResponseDTO;
-import com.ccoins.Bars.dto.TableDTO;
+import com.ccoins.Bars.dto.BarTableDTO;
 import com.ccoins.Bars.dto.TableQuantityDTO;
 import com.ccoins.Bars.service.ITableService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class TableController {
     }
 
     @PostMapping
-    ResponseEntity<TableDTO> saveOrUpdate(@RequestBody TableDTO tableDTO){
+    ResponseEntity<BarTableDTO> saveOrUpdate(@RequestBody BarTableDTO tableDTO){
         return this.service.saveOrUpdate(tableDTO);
     }
 
@@ -46,12 +46,12 @@ public class TableController {
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<TableDTO> findById(@PathVariable("id") Long id) {
+    ResponseEntity<BarTableDTO> findById(@PathVariable("id") Long id) {
         return this.service.findById(id);
     }
 
     @PutMapping("/{id}/active")
-    ResponseEntity<TableDTO> active(@PathVariable("id") Long id){
+    ResponseEntity<BarTableDTO> active(@PathVariable("id") Long id){
         return this.service.active(id);
     }
 

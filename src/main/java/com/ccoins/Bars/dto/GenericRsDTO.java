@@ -1,9 +1,11 @@
 package com.ccoins.Bars.dto;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
-public class GenericRsDTO<T> extends ResponseDTO {
+@Getter
+@Setter
+public class GenericRsDTO<T> extends ResponseDTO{
 
     private T data;
 

@@ -1,6 +1,5 @@
 package com.ccoins.Bars.model.projection;
 
-
 public interface IPBarTable {
 
     Long getId();

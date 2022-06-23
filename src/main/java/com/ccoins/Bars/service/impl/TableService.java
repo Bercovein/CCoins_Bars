@@ -8,6 +8,7 @@ import com.ccoins.Bars.exceptions.constant.ExceptionConstant;
 import com.ccoins.Bars.model.Bar;
 import com.ccoins.Bars.model.BarTable;
 import com.ccoins.Bars.model.projection.IPBarTable;
+import com.ccoins.Bars.model.projection.IPBarTableDTO;
 import com.ccoins.Bars.repository.IBarsRepository;
 import com.ccoins.Bars.repository.ITableRepository;
 import com.ccoins.Bars.service.ITableService;
@@ -42,14 +43,14 @@ public class TableService implements ITableService {
     }
 
     @Override
-    public ResponseEntity<TableDTO> saveOrUpdate(TableDTO tableDTO) {
+    public ResponseEntity<BarTableDTO> saveOrUpdate(BarTableDTO barTableDTO) {
 
         Optional<Bar> barOpt;
         BarTable table;
 
         try {
-            table = (BarTable) MapperUtils.map(tableDTO, BarTable.class);
-            barOpt = this.barRepository.findById(tableDTO.getBar());
+            table = (BarTable) MapperUtils.map(barTableDTO, BarTable.class);
+            barOpt = this.barRepository.findById(barTableDTO.getBar());
 
             if(barOpt.isEmpty()){
                 throw new ObjectNotFoundException(TABLE_FIND_BAR_BY_ID_ERROR_CODE, this.getClass(),
@@ -58,7 +59,7 @@ public class TableService implements ITableService {
 
             table.setBar(barOpt.get());
             table = this.repository.save(table);
-            return ResponseEntity.ok((TableDTO)MapperUtils.map(table,TableDTO.class));
+            return ResponseEntity.ok((BarTableDTO)MapperUtils.map(table, BarTableDTO.class));
         }catch(Exception e){
             throw new UnauthorizedException(ExceptionConstant.BAR_CREATE_OR_UPDATE_ERROR_CODE, this.getClass(),
                     ExceptionConstant.BAR_CREATE_OR_UPDATE_ERROR);
@@ -92,20 +93,16 @@ public class TableService implements ITableService {
     }
 
     @Override
-    public ResponseEntity<TableDTO> findById(Long id) {
+    public ResponseEntity<BarTableDTO> findById(Long id) {
 
-        TableDTO response = null;
+        BarTableDTO response = null;
 
         try {
             Optional<BarTable> table = this.repository.findById(id);
 
             if(table.isPresent()){
                 BarTable tbl = table.get();
-                response = TableDTO.builder().id(tbl.getId())
-                        .active(tbl.isActive())
-                        .bar(tbl.getBar().getId())
-                        .number(tbl.getNumber())
-                        .build();
+                response = BarTableDTO.convert(tbl);
             }
 
             return ResponseEntity.ok(response);
@@ -116,7 +113,7 @@ public class TableService implements ITableService {
     }
 
     @Override
-    public ResponseEntity<TableDTO> active(Long id) {
+    public ResponseEntity<BarTableDTO> active(Long id) {
         try {
             this.repository.updateActive(id);
         }catch(Exception e){
@@ -133,6 +130,7 @@ public class TableService implements ITableService {
         List<BarTable> list = new ArrayList<>();
         Long quantity = request.getQuantity();
         Long actual;
+        List<IPBarTableDTO> response = new ArrayList<>();
 
         bar = this.getBarById(request.getBar());
 
@@ -146,9 +144,11 @@ public class TableService implements ITableService {
             list.add(table);
         }
 
-        this.saveAll(list);
+        this.saveAll(list).forEach(
+                tbl -> response.add((IPBarTableDTO)MapperUtils.map(tbl, IPBarTableDTO.class))
+        );
 
-        return ResponseEntity.ok(new GenericRsDTO<>(SUCCESS_CODE,String.format(TABLES_CREATED_BY_QUANTITY,quantity),null));
+        return ResponseEntity.ok(new GenericRsDTO<>(SUCCESS_CODE,String.format(TABLES_CREATED_BY_QUANTITY,quantity),response));
     }
 
     @Override
@@ -158,9 +158,10 @@ public class TableService implements ITableService {
     }
 
     @Override
-    public void saveAll(List<BarTable> list){
+    public List<BarTable> saveAll(List<BarTable> list){
+
         try {
-            this.repository.saveAll(list);
+            return this.repository.saveAll(list);
         }catch(Exception e){
             throw new UnauthorizedException(ExceptionConstant.TABLE_CREATE_LIST_ERROR_CODE,
                     this.getClass(), ExceptionConstant.TABLE_CREATE_LIST_ERROR);

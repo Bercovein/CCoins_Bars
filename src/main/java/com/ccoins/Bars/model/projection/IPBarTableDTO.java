@@ -1,21 +1,18 @@
-package com.ccoins.Bars.dto;
+package com.ccoins.Bars.model.projection;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 @Builder
-public class TableDTO {
+public class IPBarTableDTO {
 
     private Long id;
-
     private Long number;
-
     private boolean active;
-
-    private Long bar;
+    private String qrCode;
 }

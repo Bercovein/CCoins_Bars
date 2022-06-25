@@ -55,4 +55,9 @@ public class TableController {
         return this.service.active(id);
     }
 
+    @PutMapping
+    ResponseEntity<ListDTO> activeByList(@RequestBody ListDTO request){
+        return this.service.activeByList(request);
+    }
+
 }

@@ -124,6 +124,43 @@ public class TableService implements ITableService {
     }
 
     @Override
+    public ResponseEntity<ListDTO> activeByList(ListDTO request){
+
+        try {
+            List<Long> requestList = (List<Long>) request.getList();
+
+            this.repository.updateActiveList(requestList);
+
+            return this.findByIdIn(requestList);
+        }catch (Exception e){
+            throw new UnauthorizedException(ExceptionConstant.TABLE_UPDATE_LIST_ERROR_CODE,
+                    this.getClass(), ExceptionConstant.TABLE_UPDATE_LIST_ERROR);
+        }
+
+    }
+
+    @Override
+    public ResponseEntity<ListDTO> findByIdIn(List<Long> list){
+
+        Optional<List<BarTable>> tablesOpt;
+
+        try {
+            tablesOpt = this.repository.findByIdIn(list);
+        }catch (Exception e){
+            throw new UnauthorizedException(ExceptionConstant.TABLE_FIND_LIST_ERROR_CODE,
+                    this.getClass(), ExceptionConstant.TABLE_FIND_LIST_ERROR);
+        }
+        List<BarTableDTO> tableList = new ArrayList<>();
+
+        if(tablesOpt.isPresent()){
+            List<BarTable> tables = tablesOpt.get();
+            tables.forEach(t -> tableList.add(BarTableDTO.convert(t)));
+        }
+
+        return ResponseEntity.ok(new ListDTO(tableList));
+    }
+
+    @Override
     public ResponseEntity<ResponseDTO> createByQuantity(TableQuantityDTO request) {
 
         Bar bar;

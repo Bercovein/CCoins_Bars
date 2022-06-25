@@ -65,9 +65,14 @@ public class ExceptionConstant {
     public static final String TABLE_COUNT_BY_BAR_ERROR_CODE = "0016";
     public static final String TABLE_COUNT_BY_BAR_ERROR = COUNT_ERROR_LABEL.concat("table by bar");
 
-
     public static final String TABLE_DELETE_BY_QUANTITY_ERROR_CODE = "0017";
     public static final String TABLE_DELETE_BY_QUANTITY_ERROR = DELETE_ERROR_LABEL.concat("table by quantity");
+
+    public static final String TABLE_UPDATE_LIST_ERROR_CODE = "0018";
+    public static final String TABLE_UPDATE_LIST_ERROR = UPDATE_ERROR_LABEL.concat("table by list");
+
+    public static final String TABLE_FIND_LIST_ERROR_CODE = "0019";
+    public static final String TABLE_FIND_LIST_ERROR = GET_ERROR_LABEL.concat("table by list");
 
 
 }

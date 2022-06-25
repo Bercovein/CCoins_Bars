@@ -15,6 +15,10 @@ public interface ITableService {
     ResponseEntity<BarTableDTO> findById(Long id);
     ResponseEntity<BarTableDTO> active(Long id);
 
+    ResponseEntity<ListDTO> activeByList(ListDTO request);
+
+    ResponseEntity<ListDTO> findByIdIn(List<Long> list);
+
     ResponseEntity<ResponseDTO> createByQuantity(TableQuantityDTO request);
 
     BarTable generateNewCode(BarTable table);

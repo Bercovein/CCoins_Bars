@@ -82,7 +82,7 @@
 			<version>31.1-jre</version>
 		</dependency>
 
-		<!--		&lt;!&ndash; TOMCAT &ndash;&gt;-->
+<!--		&lt;!&ndash; TOMCAT &ndash;&gt;-->
 <!--		<dependency>-->
 <!--			<groupId>org.springframework.boot</groupId>-->
 <!--			<artifactId>spring-boot-starter-tomcat</artifactId>-->

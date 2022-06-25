@@ -124,7 +124,7 @@ public class TableService implements ITableService {
     }
 
     @Override
-    public ResponseEntity<ListDTO> activeByList(ListDTO request){
+    public ResponseEntity<GenericRsDTO> activeByList(ListDTO request){
 
         try {
             List<Long> requestList = (List<Long>) request.getList();
@@ -140,7 +140,7 @@ public class TableService implements ITableService {
     }
 
     @Override
-    public ResponseEntity<ListDTO> findByIdIn(List<Long> list){
+    public ResponseEntity<GenericRsDTO> findByIdIn(List<Long> list){
 
         Optional<List<BarTable>> tablesOpt;
 
@@ -157,7 +157,7 @@ public class TableService implements ITableService {
             tables.forEach(t -> tableList.add(BarTableDTO.convert(t)));
         }
 
-        return ResponseEntity.ok(new ListDTO(tableList));
+        return ResponseEntity.ok(new GenericRsDTO<>(SUCCESS_CODE,String.format(TABLES_UPDATES_BY_QUANTITY,tableList.size()),tableList));
     }
 
     @Override

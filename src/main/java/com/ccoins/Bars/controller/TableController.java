@@ -1,9 +1,6 @@
 package com.ccoins.Bars.controller;
 
-import com.ccoins.Bars.dto.ListDTO;
-import com.ccoins.Bars.dto.ResponseDTO;
-import com.ccoins.Bars.dto.BarTableDTO;
-import com.ccoins.Bars.dto.TableQuantityDTO;
+import com.ccoins.Bars.dto.*;
 import com.ccoins.Bars.service.ITableService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -56,7 +53,7 @@ public class TableController {
     }
 
     @PutMapping
-    ResponseEntity<ListDTO> activeByList(@RequestBody ListDTO request){
+    ResponseEntity<GenericRsDTO> activeByList(@RequestBody ListDTO request){
         return this.service.activeByList(request);
     }
 

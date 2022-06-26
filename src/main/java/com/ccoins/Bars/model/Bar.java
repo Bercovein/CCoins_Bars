@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import static com.ccoins.Bars.utils.DateUtils.AUTO_DATE;
 
@@ -41,4 +42,10 @@ public class Bar {
     @Column(name="start_date",insertable = false, updatable = false,
             columnDefinition = AUTO_DATE)
     private LocalDateTime startDate;
+
+    @Column(name="open_time")
+    private LocalTime openTime;
+
+    @Column(name="close_time")
+    private LocalTime closeTime;
 }

@@ -128,10 +128,10 @@ public class TableService implements ITableService {
     }
 
     @Override
-    public ResponseEntity<ResponseDTO> activeByList(ListDTO request){
+    public ResponseEntity<ResponseDTO> activeByList(LongListDTO request){
 
         try {
-            List<Long> requestList = (List<Long>) request.getList();
+            List<Long> requestList = request.getList();
 
             this.repository.updateActiveList(requestList);
 
@@ -264,7 +264,7 @@ public class TableService implements ITableService {
     }
 
     @Override
-    public ResponseEntity<ResponseDTO> generateCodesByList(ListDTO request) {
+    public ResponseEntity<ResponseDTO> generateCodesByList(LongListDTO request) {
 
         Optional<List<BarTable>> tableList = this.findIn((List<Long>)request.getList());
 
@@ -280,6 +280,6 @@ public class TableService implements ITableService {
             }
         }
 
-        return ResponseEntity.ok(new GenericRsDTO<>(SUCCESS_CODE, String.format(TABLES_DELETED_BY_QUANTITY, tablesDto.size()), tablesDto));
+        return ResponseEntity.ok(new GenericRsDTO<>(SUCCESS_CODE, String.format(TABLES_UPDATES_BY_QUANTITY, tablesDto.size()), tablesDto));
     }
 }

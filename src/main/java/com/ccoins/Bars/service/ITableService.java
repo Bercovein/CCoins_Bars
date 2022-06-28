@@ -15,7 +15,7 @@ public interface ITableService {
     ResponseEntity<BarTableDTO> findById(Long id);
     ResponseEntity<BarTableDTO> active(Long id);
 
-    ResponseEntity<ResponseDTO> activeByList(ListDTO request);
+    ResponseEntity<ResponseDTO> activeByList(LongListDTO request);
 
     ResponseEntity<ResponseDTO> findByIdIn(List<Long> list);
 
@@ -29,5 +29,5 @@ public interface ITableService {
 
     ResponseEntity<ResponseDTO> deleteByQuantity(TableQuantityDTO request);
 
-    ResponseEntity<ResponseDTO> generateCodesByList(ListDTO idList);
+    ResponseEntity<ResponseDTO> generateCodesByList(LongListDTO idList);
 }

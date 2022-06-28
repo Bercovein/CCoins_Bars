@@ -54,17 +54,17 @@ public class TableController {
     }
 
     @PutMapping
-    ResponseEntity<ResponseDTO> activeByList(@RequestBody ListDTO request){
+    ResponseEntity<ResponseDTO> activeByList(@RequestBody LongListDTO request){
         return this.service.activeByList(request);
     }
 
     @PutMapping("/codes")
-    ResponseEntity<ResponseDTO> generateCodesByList(@RequestBody ListDTO request){
+    ResponseEntity<ResponseDTO> generateCodesByList(@RequestBody LongListDTO request){
         return this.service.generateCodesByList(request);
     }
 
     @PostMapping("/list")
-    ResponseEntity<ResponseDTO> findByIdIn(@RequestBody ListDTO request){
+    ResponseEntity<ResponseDTO> findByIdIn(@RequestBody LongListDTO request){
         return this.service.findByIdIn((List<Long>)request.getList());
     }
 

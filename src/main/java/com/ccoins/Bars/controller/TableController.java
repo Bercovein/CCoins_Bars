@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -53,8 +54,18 @@ public class TableController {
     }
 
     @PutMapping
-    ResponseEntity<GenericRsDTO> activeByList(@RequestBody ListDTO request){
+    ResponseEntity<ResponseDTO> activeByList(@RequestBody ListDTO request){
         return this.service.activeByList(request);
+    }
+
+    @PutMapping("/codes")
+    ResponseEntity<ResponseDTO> generateCodesByList(List<Long> request){
+        return this.service.generateCodesByList(request);
+    }
+
+    @PostMapping("/list")
+    ResponseEntity<ResponseDTO> findByIdIn(List<Long> list){
+        return this.service.findByIdIn(list);
     }
 
 }

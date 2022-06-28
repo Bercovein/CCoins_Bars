@@ -24,4 +24,7 @@ public class EncodeUtils {
                     EncodeUtils.class, ExceptionConstant.QR_CODE_GENERATION_ERROR);
         }
     }
+
+    private EncodeUtils() {
+    }
 }

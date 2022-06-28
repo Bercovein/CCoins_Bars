@@ -22,6 +22,8 @@ public class BarTableDTO {
 
     private Long bar;
 
+    private String code;
+
     private LocalDateTime startDate;
 
     public static BarTableDTO convert(BarTable tbl){
@@ -29,6 +31,7 @@ public class BarTableDTO {
                 .active(tbl.isActive())
                 .bar(tbl.getBar().getId())
                 .number(tbl.getNumber())
+                .code(tbl.getQrCode())
                 .startDate(tbl.getStartDate())
                 .build();
     }

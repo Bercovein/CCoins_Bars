@@ -58,12 +58,16 @@ public class TableService implements ITableService {
             }
 
             table.setBar(barOpt.get());
-            table = this.repository.save(table);
+            table = this.persist(table);
             return ResponseEntity.ok((BarTableDTO)MapperUtils.map(table, BarTableDTO.class));
         }catch(Exception e){
             throw new UnauthorizedException(ExceptionConstant.BAR_CREATE_OR_UPDATE_ERROR_CODE, this.getClass(),
                     ExceptionConstant.BAR_CREATE_OR_UPDATE_ERROR);
         }
+    }
+
+    private BarTable persist(BarTable table){
+        return this.repository.save(table);
     }
 
     @Override
@@ -124,7 +128,7 @@ public class TableService implements ITableService {
     }
 
     @Override
-    public ResponseEntity<GenericRsDTO> activeByList(ListDTO request){
+    public ResponseEntity<ResponseDTO> activeByList(ListDTO request){
 
         try {
             List<Long> requestList = (List<Long>) request.getList();
@@ -140,7 +144,21 @@ public class TableService implements ITableService {
     }
 
     @Override
-    public ResponseEntity<GenericRsDTO> findByIdIn(List<Long> list){
+    public ResponseEntity<ResponseDTO> findByIdIn(List<Long> list){
+
+        Optional<List<BarTable>> tablesOpt = this.findIn(list);
+
+        List<BarTableDTO> tableList = new ArrayList<>();
+
+        if(tablesOpt.isPresent()){
+            List<BarTable> tables = tablesOpt.get();
+            tables.forEach(t -> tableList.add(BarTableDTO.convert(t)));
+        }
+
+        return ResponseEntity.ok(new GenericRsDTO<>(SUCCESS_CODE,String.format(TABLES_FINDED,tableList.size()),tableList));
+    }
+
+    private Optional<List<BarTable>> findIn(List<Long> list){
 
         Optional<List<BarTable>> tablesOpt;
 
@@ -150,14 +168,7 @@ public class TableService implements ITableService {
             throw new UnauthorizedException(ExceptionConstant.TABLE_FIND_LIST_ERROR_CODE,
                     this.getClass(), ExceptionConstant.TABLE_FIND_LIST_ERROR);
         }
-        List<BarTableDTO> tableList = new ArrayList<>();
-
-        if(tablesOpt.isPresent()){
-            List<BarTable> tables = tablesOpt.get();
-            tables.forEach(t -> tableList.add(BarTableDTO.convert(t)));
-        }
-
-        return ResponseEntity.ok(new GenericRsDTO<>(SUCCESS_CODE,String.format(TABLES_UPDATES_BY_QUANTITY,tableList.size()),tableList));
+        return tablesOpt;
     }
 
     @Override
@@ -250,5 +261,25 @@ public class TableService implements ITableService {
             throw new BadRequestException(ExceptionConstant.TABLE_DELETE_BY_QUANTITY_ERROR_CODE,
                     this.getClass(), ExceptionConstant.TABLE_DELETE_BY_QUANTITY_ERROR);
         }
+    }
+
+    @Override
+    public ResponseEntity<ResponseDTO> generateCodesByList(List<Long> idList) {
+
+        Optional<List<BarTable>> tableList = this.findIn(idList);
+
+        List<BarTable> tables;
+        List<BarTableDTO> tablesDto = new ArrayList<>();
+
+        if(tableList.isPresent()){
+            tables = tableList.get();
+            for (BarTable table:tables) {
+                table.setQrCode(EncodeUtils.generateCode());
+                table = this.persist(table);
+                tablesDto.add(BarTableDTO.convert(table));
+            }
+        }
+
+        return ResponseEntity.ok(new GenericRsDTO<>(SUCCESS_CODE, String.format(TABLES_DELETED_BY_QUANTITY, tablesDto.size()), tablesDto));
     }
 }

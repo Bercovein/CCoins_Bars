@@ -59,13 +59,13 @@ public class TableController {
     }
 
     @PutMapping("/codes")
-    ResponseEntity<ResponseDTO> generateCodesByList(List<Long> request){
+    ResponseEntity<ResponseDTO> generateCodesByList(@RequestBody ListDTO request){
         return this.service.generateCodesByList(request);
     }
 
     @PostMapping("/list")
-    ResponseEntity<ResponseDTO> findByIdIn(List<Long> list){
-        return this.service.findByIdIn(list);
+    ResponseEntity<ResponseDTO> findByIdIn(@RequestBody ListDTO request){
+        return this.service.findByIdIn((List<Long>)request.getList());
     }
 
 }

@@ -264,9 +264,9 @@ public class TableService implements ITableService {
     }
 
     @Override
-    public ResponseEntity<ResponseDTO> generateCodesByList(List<Long> idList) {
+    public ResponseEntity<ResponseDTO> generateCodesByList(ListDTO request) {
 
-        Optional<List<BarTable>> tableList = this.findIn(idList);
+        Optional<List<BarTable>> tableList = this.findIn((List<Long>)request.getList());
 
         List<BarTable> tables;
         List<BarTableDTO> tablesDto = new ArrayList<>();

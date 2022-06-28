@@ -29,5 +29,5 @@ public interface ITableService {
 
     ResponseEntity<ResponseDTO> deleteByQuantity(TableQuantityDTO request);
 
-    ResponseEntity<ResponseDTO> generateCodesByList(List<Long> idList);
+    ResponseEntity<ResponseDTO> generateCodesByList(ListDTO idList);
 }

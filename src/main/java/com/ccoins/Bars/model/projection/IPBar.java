@@ -11,4 +11,5 @@ public interface IPBar {
     boolean isActive();
     Long getOwner();
     LocalDateTime getStartDate();
+    String getLocation();
 }

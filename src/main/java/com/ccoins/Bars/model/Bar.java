@@ -48,4 +48,7 @@ public class Bar {
 
     @Column(name="close_time")
     private LocalTime closeTime;
+
+    @Column(name="location")
+    private String location;
 }

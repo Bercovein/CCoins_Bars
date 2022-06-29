@@ -17,7 +17,9 @@ public interface ITableService {
 
     ResponseEntity<ResponseDTO> activeByList(LongListDTO request);
 
-    ResponseEntity<ResponseDTO> findByIdIn(List<Long> list);
+    List<BarTableDTO> findByIdIn(List<Long> list);
+
+    Optional<List<BarTable>> findIn(List<Long> list);
 
     ResponseEntity<ResponseDTO> createByQuantity(TableQuantityDTO request);
 

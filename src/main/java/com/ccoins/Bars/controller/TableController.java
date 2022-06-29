@@ -64,8 +64,8 @@ public class TableController {
     }
 
     @PostMapping("/list")
-    ResponseEntity<ResponseDTO> findByIdIn(@RequestBody LongListDTO request){
-        return this.service.findByIdIn((List<Long>)request.getList());
+    List<BarTableDTO> findByIdIn(@RequestBody LongListDTO request){
+        return this.service.findByIdIn(request.getList());
     }
 
 }

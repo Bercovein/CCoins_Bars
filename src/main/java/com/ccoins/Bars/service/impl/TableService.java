@@ -135,7 +135,10 @@ public class TableService implements ITableService {
 
             this.repository.updateActiveList(requestList);
 
-            return this.findByIdIn(requestList);
+            List<BarTableDTO> tableList = this.findByIdIn(requestList);
+
+            return ResponseEntity.ok(new GenericRsDTO<>(SUCCESS_CODE,String.format(TABLES_FINDED,tableList.size()),tableList));
+
         }catch (Exception e){
             throw new UnauthorizedException(ExceptionConstant.TABLE_UPDATE_LIST_ERROR_CODE,
                     this.getClass(), ExceptionConstant.TABLE_UPDATE_LIST_ERROR);
@@ -144,7 +147,7 @@ public class TableService implements ITableService {
     }
 
     @Override
-    public ResponseEntity<ResponseDTO> findByIdIn(List<Long> list){
+    public List<BarTableDTO> findByIdIn(List<Long> list){
 
         Optional<List<BarTable>> tablesOpt = this.findIn(list);
 
@@ -155,10 +158,11 @@ public class TableService implements ITableService {
             tables.forEach(t -> tableList.add(BarTableDTO.convert(t)));
         }
 
-        return ResponseEntity.ok(new GenericRsDTO<>(SUCCESS_CODE,String.format(TABLES_FINDED,tableList.size()),tableList));
+        return tableList;
     }
 
-    private Optional<List<BarTable>> findIn(List<Long> list){
+    @Override
+    public Optional<List<BarTable>> findIn(List<Long> list){
 
         Optional<List<BarTable>> tablesOpt;
 
@@ -266,7 +270,7 @@ public class TableService implements ITableService {
     @Override
     public ResponseEntity<ResponseDTO> generateCodesByList(LongListDTO request) {
 
-        Optional<List<BarTable>> tableList = this.findIn((List<Long>)request.getList());
+        Optional<List<BarTable>> tableList = this.findIn(request.getList());
 
         List<BarTable> tables;
         List<BarTableDTO> tablesDto = new ArrayList<>();

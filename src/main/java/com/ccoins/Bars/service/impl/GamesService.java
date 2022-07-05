@@ -3,10 +3,14 @@ package com.ccoins.Bars.service.impl;
 import com.ccoins.Bars.dto.GameDTO;
 import com.ccoins.Bars.dto.GameTypeDTO;
 import com.ccoins.Bars.dto.ListDTO;
+import com.ccoins.Bars.exceptions.ObjectNotFoundException;
 import com.ccoins.Bars.exceptions.UnauthorizedException;
 import com.ccoins.Bars.exceptions.constant.ExceptionConstant;
+import com.ccoins.Bars.model.Bar;
 import com.ccoins.Bars.model.Game;
 import com.ccoins.Bars.model.GameType;
+import com.ccoins.Bars.model.projection.IPGame;
+import com.ccoins.Bars.repository.IBarsRepository;
 import com.ccoins.Bars.repository.IGamesRepository;
 import com.ccoins.Bars.repository.IGamesTypesRepository;
 import com.ccoins.Bars.service.IGamesService;
@@ -26,19 +30,33 @@ public class GamesService implements IGamesService {
 
     private final IGamesRepository repository;
     private final IGamesTypesRepository typesRepository;
-
+    private final IBarsRepository barRepository;
+    
     @Autowired
-    public GamesService(IGamesRepository repository, IGamesTypesRepository typesRepository) {
+    public GamesService(IGamesRepository repository, IGamesTypesRepository typesRepository, IBarsRepository barRepository) {
         this.repository = repository;
         this.typesRepository = typesRepository;
+        this.barRepository = barRepository;
     }
 
     @Override
     public ResponseEntity<GameDTO> saveOrUpdate(GameDTO gameDTO) {
 
+        Optional<Bar> barOpt;
+        Game game;
+        
         try {
-            Game game = this.repository.save((Game)MapperUtils.map(gameDTO,Game.class));
-            return ResponseEntity.ok((GameDTO)MapperUtils.map(game,GameDTO.class));
+            game = (Game) MapperUtils.map(gameDTO, Game.class);
+            barOpt = this.barRepository.findById(gameDTO.getBar());
+
+            if(barOpt.isEmpty()){
+                throw new ObjectNotFoundException(ExceptionConstant.GAME_FIND_BAR_BY_ID_ERROR_CODE, this.getClass(),
+                        ExceptionConstant.GAME_FIND_BAR_BY_ID_ERROR);
+            }
+
+            game.setBar(barOpt.get());
+            game = this.repository.save(game);
+            return ResponseEntity.ok(GameDTO.convert(game));
         }catch(Exception e){
             throw new UnauthorizedException(ExceptionConstant.GAME_CREATE_OR_UPDATE_ERROR_CODE,
                     this.getClass(), ExceptionConstant.GAME_CREATE_OR_UPDATE_ERROR);
@@ -49,14 +67,11 @@ public class GamesService implements IGamesService {
     public ResponseEntity<ListDTO> findAllByBar(Long id) {
 
         ListDTO response = new ListDTO(new ArrayList<>());
+        Optional<List<IPGame>> opt;
 
         try {
-            Optional<List<Game>> opt = this.repository.findByBar(id);
-
-            if(opt.isPresent()){
-                List<Game> list = opt.get();
-                response.setList(MapperUtils.mapList(list, GameDTO.class));
-            }
+            opt = this.repository.findByBarId(id);
+            opt.ifPresent(response::setList);
 
             return ResponseEntity.ok(response);
         }catch(Exception e){
@@ -70,7 +85,7 @@ public class GamesService implements IGamesService {
     public ResponseEntity<GameDTO> findById(Long id) {
 
         try {
-            Optional<Game> game = this.repository.findById(id);
+            Optional<IPGame> game = this.repository.findProjectedById(id);
             return ResponseEntity.ok((GameDTO)MapperUtils.map(game,GameDTO.class));
         }catch(Exception e){
             throw new UnauthorizedException(ExceptionConstant.GAME_FIND_BY_ID_ERROR_CODE,

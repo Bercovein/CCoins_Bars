@@ -74,5 +74,6 @@ public class ExceptionConstant {
     public static final String TABLE_FIND_LIST_ERROR_CODE = "0019";
     public static final String TABLE_FIND_LIST_ERROR = GET_ERROR_LABEL.concat("table by list");
 
-
+    public static final String GAME_FIND_BAR_BY_ID_ERROR_CODE = "0020";
+    public static final String GAME_FIND_BAR_BY_ID_ERROR = BAR_FIND_BY_ID_ERROR;
 }

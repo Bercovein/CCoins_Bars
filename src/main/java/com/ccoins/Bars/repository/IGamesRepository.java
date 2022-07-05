@@ -1,6 +1,8 @@
 package com.ccoins.Bars.repository;
 
 import com.ccoins.Bars.model.Game;
+import com.ccoins.Bars.model.projection.IPGame;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -16,7 +18,9 @@ public interface IGamesRepository extends JpaRepository<Game, Long> {
 
     Game save(Game bar);
 
-    Optional<List<Game>> findByBar(Long id);
+    Optional<IPGame> findProjectedById(Long id);
+    
+    Optional<List<IPGame>> findByBarId(Long id);
 
     @Transactional
     @Modifying

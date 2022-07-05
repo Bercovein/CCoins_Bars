@@ -21,12 +21,12 @@ public interface ITableRepository extends JpaRepository<BarTable, Long> {
 
     @Transactional
     @Modifying
-    @Query(value = "UPDATE Tables set active = IF(active IS TRUE, FALSE, TRUE) where id = :id",nativeQuery = true)
+    @Query(value = "UPDATE bar_tables set active = IF(active IS TRUE, FALSE, TRUE) where id = :id",nativeQuery = true)
     int updateActive(@Param("id") Long id);
 
     @Transactional
     @Modifying
-    @Query(value = "UPDATE Tables set active = IF(active IS TRUE, FALSE, TRUE) where id in (:list)",nativeQuery = true)
+    @Query(value = "UPDATE bar_tables set active = IF(active IS TRUE, FALSE, TRUE) where id in (:list)",nativeQuery = true)
     int updateActiveList(@Param("list") List<Long> list);
 
     Long countByBarId(Long bar);

@@ -8,6 +8,8 @@ public class DateUtils {
 
     public static final String HH_MM = "HH:mm";
 
+    public static final String DDMMYYYY_HHMM = "DD/MM/YYYY HH:mm";
+
     public static LocalDateTime now(){
         return LocalDateTime.now();
     }

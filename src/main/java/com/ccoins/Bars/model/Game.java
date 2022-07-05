@@ -6,8 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.persistence.Table;
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Data
 @AllArgsConstructor
@@ -31,11 +30,11 @@ public class Game {
     @Column(name="points")
     private Long points;
 
-    @Column(name="start_date")
-    private LocalDateTime startDate;
+    @Column(name="open_time")
+    private LocalTime openTime;
 
-    @Column(name="end_date")
-    private LocalDateTime endDate;
+    @Column(name="close_time")
+    private LocalTime closeTime;
 
     @Column(name="active", columnDefinition = "boolean default true")
     private boolean active;

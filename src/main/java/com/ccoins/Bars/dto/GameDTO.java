@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 import com.ccoins.Bars.model.Game;
-import com.ccoins.Bars.model.GameType;
 
 @Data
 @AllArgsConstructor

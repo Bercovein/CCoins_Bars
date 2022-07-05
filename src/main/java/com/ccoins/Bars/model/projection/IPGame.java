@@ -2,9 +2,9 @@ package com.ccoins.Bars.model.projection;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 
-import static com.ccoins.Bars.utils.DateUtils.DDMMYYYY_HHMM;
+import static com.ccoins.Bars.utils.DateUtils.HH_MM;
 
 public interface IPGame {
     
@@ -13,11 +13,11 @@ public interface IPGame {
     String getRules();
     Long getPoints();
 
-    @JsonFormat(pattern = DDMMYYYY_HHMM)
-    LocalDateTime getStartDate();
+    @JsonFormat(pattern = HH_MM)
+    LocalTime getOpenTime();
 
-    @JsonFormat(pattern = DDMMYYYY_HHMM)
-    LocalDateTime getEndDate();
+    @JsonFormat(pattern = HH_MM)
+    LocalTime getCloseTime();
     boolean getActive();
     IPGameType getGameType();
 }

@@ -2,6 +2,7 @@ package com.ccoins.bars.service;
 
 import com.ccoins.bars.dto.*;
 import com.ccoins.bars.model.BarTable;
+import com.ccoins.bars.model.projection.IPBarTable;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -32,4 +33,6 @@ public interface ITableService {
     ResponseEntity<ResponseDTO> deleteByQuantity(TableQuantityDTO request);
 
     ResponseEntity<ResponseDTO> generateCodesByList(LongListDTO idList);
+
+    IPBarTable findByCode(String code);
 }

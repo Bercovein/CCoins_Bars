@@ -1,6 +1,7 @@
 package com.ccoins.bars.controller;
 
 import com.ccoins.bars.dto.*;
+import com.ccoins.bars.model.projection.IPBarTable;
 import com.ccoins.bars.service.ITableService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -66,6 +67,11 @@ public class TableController {
     @PostMapping("/list")
     List<BarTableDTO> findByIdIn(@RequestBody LongListDTO request){
         return this.service.findByIdIn(request.getList());
+    }
+
+    @GetMapping("/code/{code}")
+    IPBarTable findByCode(@PathVariable("code")String code){
+        return this.service.findByCode(code);
     }
 
 }

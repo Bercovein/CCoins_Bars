@@ -38,4 +38,5 @@ public interface ITableRepository extends JpaRepository<BarTable, Long> {
 
     Optional<BarTable> findById(Long id);
 
+    Optional<IPBarTable> findByQrCode(String code);
 }

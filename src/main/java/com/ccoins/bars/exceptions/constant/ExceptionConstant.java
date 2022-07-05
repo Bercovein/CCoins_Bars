@@ -76,4 +76,7 @@ public class ExceptionConstant {
 
     public static final String GAME_FIND_BAR_BY_ID_ERROR_CODE = "0020";
     public static final String GAME_FIND_BAR_BY_ID_ERROR = BAR_FIND_BY_ID_ERROR;
+
+    public static final String TABLE_FIND_BY_CODE_ERROR_CODE = "0021";
+    public static final String TABLE_FIND_BY_CODE_ERROR = GET_ERROR_LABEL.concat("table by code");
 }

@@ -12,6 +12,7 @@
 	<artifactId>${app.name}</artifactId>
 	<version>1.0.0</version>
 	<name>Bars</name>
+	<packaging>war</packaging>
 	<description>Demo project for Spring Boot</description>
 <!--	<packaging>war</packaging>-->
 	<properties>
@@ -26,10 +27,17 @@
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
+		</dependency>
+<!--
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
+-->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>

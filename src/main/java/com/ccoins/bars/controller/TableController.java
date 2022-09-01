@@ -1,5 +1,6 @@
 package com.ccoins.bars.controller;
 
+import com.ccoins.bars.controller.swagger.ITablesController;
 import com.ccoins.bars.dto.*;
 import com.ccoins.bars.model.projection.IPBarTable;
 import com.ccoins.bars.service.ITableService;
@@ -12,7 +13,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/tables")
-public class TableController {
+public class TableController implements ITablesController{
 
     private final ITableService service;
 
@@ -21,57 +22,72 @@ public class TableController {
         this.service = service;
     }
 
+    @Override
     @PostMapping
-    ResponseEntity<BarTableDTO> saveOrUpdate(@RequestBody BarTableDTO tableDTO){
+    public ResponseEntity<BarTableDTO> saveOrUpdate(@RequestBody BarTableDTO tableDTO){
         return this.service.saveOrUpdate(tableDTO);
     }
 
+    @Override
     @PostMapping("/quantity")
     public ResponseEntity<ResponseDTO> createByQuantity(@RequestBody TableQuantityDTO request){
         return this.service.createByQuantity(request);
     }
 
+    @Override
     @DeleteMapping("/quantity")
     public ResponseEntity<ResponseDTO> deleteByQuantity(@RequestBody TableQuantityDTO request){
         return this.service.deleteByQuantity(request);
     }
 
+    @Override
     @GetMapping({"/bar/{barId}", "/bar/{barId}/{status}"})
-    ResponseEntity<ListDTO> findAllByBarAndOptStatus(
+    public ResponseEntity<ListDTO> findAllByBarAndOptStatus(
             @PathVariable("barId") Long barId,
             @PathVariable("status") Optional<String> status)
     {
         return this.service.findAllByBarAndOptStatus(barId, status);
     }
 
+    @Override
     @GetMapping("/{id}")
-    ResponseEntity<BarTableDTO> findById(@PathVariable("id") Long id) {
+    public ResponseEntity<BarTableDTO> findById(@PathVariable("id") Long id) {
         return this.service.findById(id);
     }
 
+    @Override
     @PutMapping("/{id}/active")
-    ResponseEntity<BarTableDTO> active(@PathVariable("id") Long id){
+    public ResponseEntity<BarTableDTO> active(@PathVariable("id") Long id){
         return this.service.active(id);
     }
 
+    @Override
     @PutMapping
-    ResponseEntity<ResponseDTO> activeByList(@RequestBody LongListDTO request){
+    public ResponseEntity<ResponseDTO> activeByList(@RequestBody LongListDTO request){
         return this.service.activeByList(request);
     }
 
+    @Override
     @PutMapping("/codes")
-    ResponseEntity<ResponseDTO> generateCodesByList(@RequestBody LongListDTO request){
+    public ResponseEntity<ResponseDTO> generateCodesByList(@RequestBody LongListDTO request){
         return this.service.generateCodesByList(request);
     }
 
+    @Override
     @PostMapping("/list")
-    List<BarTableDTO> findByIdIn(@RequestBody LongListDTO request){
+    public List<BarTableDTO> findByIdIn(@RequestBody LongListDTO request){
         return this.service.findByIdIn(request.getList());
     }
 
+    @Override
     @GetMapping("/code/{code}")
-    IPBarTable findByCode(@PathVariable("code")String code){
+    public IPBarTable findByCode(@PathVariable("code") String code){
         return this.service.findByCode(code);
     }
 
+    @Override
+    @GetMapping("/code/{code}/active")
+    public ResponseEntity<Boolean> isActiveByQrCode(String qrCode){
+        return this.service.isActiveByQrCode(qrCode);
+    }
 }

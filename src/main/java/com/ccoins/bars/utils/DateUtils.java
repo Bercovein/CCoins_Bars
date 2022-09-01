@@ -1,6 +1,7 @@
 package com.ccoins.bars.utils;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class DateUtils {
 
@@ -12,5 +13,13 @@ public class DateUtils {
 
     public static LocalDateTime now(){
         return LocalDateTime.now();
+    }
+
+    public static boolean isBetween(LocalTime start, LocalTime end, LocalTime time) {
+        if (start.isAfter(end)) {
+            return !time.isBefore(start) || !time.isAfter(end);
+        } else {
+            return !time.isBefore(start) && !time.isAfter(end);
+        }
     }
 }

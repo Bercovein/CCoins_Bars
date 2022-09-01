@@ -1,5 +1,6 @@
 package com.ccoins.bars.controller;
 
+import com.ccoins.bars.controller.swagger.IGamesController;
 import com.ccoins.bars.dto.GameDTO;
 import com.ccoins.bars.dto.ListDTO;
 import com.ccoins.bars.service.IGamesService;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/games")
-public class GamesController {
+public class GamesController implements IGamesController {
 
     private final IGamesService service;
 
@@ -18,28 +19,33 @@ public class GamesController {
         this.service = service;
     }
 
+    @Override
     @PostMapping
-    ResponseEntity<GameDTO> saveOrUpdate(@RequestBody GameDTO barDTO){
-        return this.service.saveOrUpdate(barDTO);
+    public ResponseEntity<GameDTO> saveOrUpdate(@RequestBody GameDTO gameDTO){
+        return this.service.saveOrUpdate(gameDTO);
     }
 
+    @Override
     @GetMapping("/bar/{id}")
-    ResponseEntity<ListDTO> findAllByBar(@PathVariable("id") Long id) {
+    public ResponseEntity<ListDTO> findAllByBar(@PathVariable("id") Long id) {
         return this.service.findAllByBar(id);
     }
 
+    @Override
     @GetMapping("/{id}")
-    ResponseEntity<GameDTO> findById(@PathVariable("id") Long id) {
+    public ResponseEntity<GameDTO> findById(@PathVariable("id") Long id) {
         return this.service.findById(id);
     }
 
+    @Override
     @PutMapping("/{id}/active")
-    ResponseEntity<GameDTO> active(@PathVariable("id") Long id){
+    public ResponseEntity<GameDTO> active(@PathVariable("id") Long id){
         return this.service.active(id);
     }
 
+    @Override
     @GetMapping("/types")
-    ResponseEntity<ListDTO> findAllTypes() {
+    public ResponseEntity<ListDTO> findAllTypes() {
         return this.service.findAllTypes();
     }
 }

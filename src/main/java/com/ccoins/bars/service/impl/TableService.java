@@ -12,6 +12,7 @@ import com.ccoins.bars.model.projection.IPBarTableDTO;
 import com.ccoins.bars.repository.IBarsRepository;
 import com.ccoins.bars.repository.ITableRepository;
 import com.ccoins.bars.service.ITableService;
+import com.ccoins.bars.utils.DateUtils;
 import com.ccoins.bars.utils.EncodeUtils;
 import com.ccoins.bars.utils.MapperUtils;
 import com.ccoins.bars.utils.StateUtils;
@@ -20,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -297,5 +299,29 @@ public class TableService implements ITableService {
         }
 
         return table.get();
+    }
+
+    @Override
+    public ResponseEntity<Boolean> isActiveByQrCode(String qrCode) {
+
+        Optional<BarTable> barTableOpt;
+
+        try {
+            barTableOpt = this.repository.findActiveByQrCode(qrCode);
+        }catch (Exception e){
+            throw new BadRequestException(ExceptionConstant.TABLE_BARFIND_BY_CODE_ERROR_CODE,
+                    this.getClass(), ExceptionConstant.TABLE_BARFIND_BY_CODE_ERROR);
+        }
+
+        if (barTableOpt.isEmpty())
+            return ResponseEntity.ok(false);
+
+        Bar bar = barTableOpt.get().getBar();
+        boolean response = true;
+
+        if(bar.getOpenTime() != null && bar.getCloseTime() != null)
+            response = DateUtils.isBetween(bar.getOpenTime(),bar.getCloseTime(),LocalTime.now());
+
+        return ResponseEntity.ok(response);
     }
 }

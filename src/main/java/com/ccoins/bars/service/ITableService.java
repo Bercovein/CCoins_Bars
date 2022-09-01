@@ -35,4 +35,6 @@ public interface ITableService {
     ResponseEntity<ResponseDTO> generateCodesByList(LongListDTO idList);
 
     IPBarTable findByCode(String code);
+
+    ResponseEntity<Boolean> isActiveByQrCode(String qrCode);
 }

@@ -87,7 +87,7 @@ public class TableController implements ITablesController{
 
     @Override
     @GetMapping("/code/{code}/active")
-    public ResponseEntity<Boolean> isActiveByQrCode(String qrCode){
-        return this.service.isActiveByQrCode(qrCode);
+    public ResponseEntity<Boolean> isActiveByQrCode(@PathVariable("code") String code){
+        return this.service.isActiveByQrCode(code);
     }
 }

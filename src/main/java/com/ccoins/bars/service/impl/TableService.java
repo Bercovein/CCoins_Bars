@@ -16,7 +16,9 @@ import com.ccoins.bars.utils.DateUtils;
 import com.ccoins.bars.utils.EncodeUtils;
 import com.ccoins.bars.utils.MapperUtils;
 import com.ccoins.bars.utils.StateUtils;
+import com.ccoins.bars.utils.enums.BarTimeEnum;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -302,7 +304,7 @@ public class TableService implements ITableService {
     }
 
     @Override
-    public ResponseEntity<Boolean> isActiveByQrCode(String qrCode) {
+    public ResponseEntity<GenericRsDTO<?>> isActiveByQrCode(String qrCode) {
 
         Optional<BarTable> barTableOpt;
 
@@ -314,14 +316,19 @@ public class TableService implements ITableService {
         }
 
         if (barTableOpt.isEmpty())
-            return ResponseEntity.ok(false);
+            return ResponseEntity.ok(new GenericRsDTO<>(Strings.EMPTY, BarTimeEnum.NO_TABLE.getMessage(),false));
 
         Bar bar = barTableOpt.get().getBar();
-        boolean response = true;
+        boolean response;
 
-        if(bar.getOpenTime() != null && bar.getCloseTime() != null)
-            response = DateUtils.isBetween(bar.getOpenTime(),bar.getCloseTime(),LocalTime.now());
+        if(bar.getOpenTime() != null && bar.getCloseTime() != null) {
+            response = DateUtils.isBetween(bar.getOpenTime(), bar.getCloseTime(), LocalTime.now());
+            if(!response){
+                return ResponseEntity.ok(new GenericRsDTO<>(Strings.EMPTY,BarTimeEnum.OUT_TIME.getMessage(),false));
+            }
+        }
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(new GenericRsDTO<>(Strings.EMPTY,BarTimeEnum.ON_TIME.getMessage(),true));
+
     }
 }

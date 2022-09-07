@@ -47,6 +47,6 @@ public interface ITablesController {
     IPBarTable findByCode(@PathVariable("code") String code);
 
     @ApiOperation(value = "Returns activity of bar and table by QR code")
-    ResponseEntity<Boolean> isActiveByQrCode(String qrCode);
+    ResponseEntity<GenericRsDTO<?>> isActiveByQrCode(String qrCode);
 
 }

@@ -36,5 +36,5 @@ public interface ITableService {
 
     IPBarTable findByCode(String code);
 
-    ResponseEntity<Boolean> isActiveByQrCode(String qrCode);
+    ResponseEntity<GenericRsDTO<?>> isActiveByQrCode(String qrCode);
 }

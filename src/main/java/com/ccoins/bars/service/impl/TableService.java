@@ -319,6 +319,10 @@ public class TableService implements ITableService {
             return ResponseEntity.ok(new GenericRsDTO<>(Strings.EMPTY, BarTimeEnum.NO_TABLE.getMessage(),false));
 
         Bar bar = barTableOpt.get().getBar();
+
+        if(!bar.isActive())
+            return ResponseEntity.ok(new GenericRsDTO<>(Strings.EMPTY, BarTimeEnum.NO_ACTIVE_BAR.getMessage(),false));
+
         boolean response;
 
         if(bar.getOpenTime() != null && bar.getCloseTime() != null) {

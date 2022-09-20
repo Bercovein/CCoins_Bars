@@ -9,7 +9,8 @@ public enum BarTimeEnum {
 
     ON_TIME("Exitoso"),
     OUT_TIME("Se encuentra fuera del horario establecido"),
-    NO_TABLE("La mesa no se encuentra activa");
+    NO_TABLE("La mesa no se encuentra activa"),
+    NO_ACTIVE_BAR("La página del bar no está disponible");
 
     final String message;
 }

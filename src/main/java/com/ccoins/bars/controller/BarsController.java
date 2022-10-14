@@ -3,6 +3,7 @@ package com.ccoins.bars.controller;
 import com.ccoins.bars.controller.swagger.IBarsController;
 import com.ccoins.bars.dto.BarDTO;
 import com.ccoins.bars.dto.ListDTO;
+import com.ccoins.bars.dto.StringDTO;
 import com.ccoins.bars.service.IBarsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -41,5 +42,11 @@ public class BarsController implements IBarsController {
     @PutMapping("/{id}/active")
     public ResponseEntity<BarDTO> active(@PathVariable("id") Long id){
         return this.service.active(id);
+    }
+
+    @GetMapping("/menu/table/{code}")
+    @Override
+    public ResponseEntity<StringDTO> findUrlByTableCode(@PathVariable("code") String code){
+        return this.service.findUrlByTableCode(code);
     }
 }

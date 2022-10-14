@@ -82,4 +82,8 @@ public class ExceptionConstant {
 
     public static final String TABLE_BARFIND_BY_CODE_ERROR_CODE = "0022";
     public static final String TABLE_BARFIND_BY_CODE_ERROR = GET_ERROR_LABEL.concat("active table by code");
+
+
+    public static final String BAR_GET_MENU_BY_CODE_ERROR_CODE = "0023";
+    public static final String BAR_GET_MENU_BY_CODE_ERROR = GET_ERROR_LABEL.concat("bar menu by table code");
 }

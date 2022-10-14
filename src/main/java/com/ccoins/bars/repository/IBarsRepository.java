@@ -23,4 +23,5 @@ public interface IBarsRepository extends JpaRepository<Bar, Long> {
     @Modifying
     @Query(value = "UPDATE bars set active = IF(active IS TRUE, FALSE, TRUE) where id = :id", nativeQuery = true)
     int updateActive(@Param("id") Long id);
+
 }

@@ -45,4 +45,7 @@ public interface ITableRepository extends JpaRepository<BarTable, Long> {
             " WHERE bt.code = :code " +
             " AND bt.active IS TRUE", nativeQuery = true)
     Optional<BarTable> findActiveByQrCode(@Param("code")String code);
+
+    @Query("SELECT t.bar.menuLink FROM BarTable t WHERE t.qrCode = :code")
+    Optional<String> findMenuByQrCode(@Param("code")String code);
 }

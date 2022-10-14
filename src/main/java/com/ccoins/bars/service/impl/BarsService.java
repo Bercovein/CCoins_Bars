@@ -2,14 +2,16 @@ package com.ccoins.bars.service.impl;
 
 import com.ccoins.bars.dto.BarDTO;
 import com.ccoins.bars.dto.ListDTO;
+import com.ccoins.bars.dto.StringDTO;
 import com.ccoins.bars.exceptions.UnauthorizedException;
 import com.ccoins.bars.exceptions.constant.ExceptionConstant;
 import com.ccoins.bars.model.Bar;
 import com.ccoins.bars.model.projection.IPBar;
 import com.ccoins.bars.repository.IBarsRepository;
+import com.ccoins.bars.repository.ITableRepository;
 import com.ccoins.bars.service.IBarsService;
 import com.ccoins.bars.utils.MapperUtils;
-import lombok.extern.slf4j.Slf4j;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -19,14 +21,15 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Slf4j
 public class BarsService implements IBarsService {
 
     private final IBarsRepository repository;
+    private final ITableRepository tableRepository;
 
     @Autowired
-    public BarsService(IBarsRepository repository) {
+    public BarsService(IBarsRepository repository, ITableRepository tableRepository) {
         this.repository = repository;
+        this.tableRepository = tableRepository;
     }
 
     @Override
@@ -79,11 +82,24 @@ public class BarsService implements IBarsService {
         try {
             this.repository.updateActive(id);
         }catch(Exception e){
-            e.printStackTrace();
             throw new UnauthorizedException(ExceptionConstant.BAR_UPDATE_ACTIVE_ERROR_CODE,
                     this.getClass(), ExceptionConstant.BAR_UPDATE_ACTIVE_ERROR);
         }
         return this.findById(id);
+    }
+
+    @Override
+    public ResponseEntity<StringDTO> findUrlByTableCode(String code) {
+
+        try{
+            StringDTO response = StringDTO.builder().text(
+                    this.tableRepository.findMenuByQrCode(code).orElse(Strings.EMPTY)
+            ).build();
+            return ResponseEntity.ok(response);
+        }catch(Exception e){
+            throw new UnauthorizedException(ExceptionConstant.BAR_GET_MENU_BY_CODE_ERROR_CODE,
+                    this.getClass(), ExceptionConstant.BAR_GET_MENU_BY_CODE_ERROR);
+        }
     }
 
     private Bar convert(BarDTO barDTO){

@@ -86,4 +86,7 @@ public class ExceptionConstant {
 
     public static final String BAR_GET_MENU_BY_CODE_ERROR_CODE = "0023";
     public static final String BAR_GET_MENU_BY_CODE_ERROR = GET_ERROR_LABEL.concat("bar menu by table code");
+
+
+    public static final String SPOTIFY_PLAYBACK_ERROR_CODE = "0024";
 }

@@ -6,6 +6,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class ItemSPTF {
-
     private SongSPTF track;
 }

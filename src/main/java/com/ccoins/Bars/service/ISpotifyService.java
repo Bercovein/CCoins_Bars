@@ -1,11 +1,10 @@
 package com.ccoins.bars.service;
 
-import com.ccoins.bars.spotify.CredentialsSPTFDTO;
-import com.ccoins.bars.spotify.PlaylistSPTF;
-import com.ccoins.bars.spotify.RecentlyPlayedSPTF;
-import com.ccoins.bars.spotify.UriSPTF;
+import com.ccoins.bars.spotify.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+
+import java.util.Optional;
 
 public interface ISpotifyService {
 
@@ -16,4 +15,8 @@ public interface ISpotifyService {
     void addTrackToQueue(HttpHeaders headers, UriSPTF trackUri);
 
     CredentialsSPTFDTO getCredentials();
+
+    Optional<PlaybackSPTF> getPlaybackState(HttpHeaders headers);
+
+    void addBarTokenInMemory(Long barId, String token);
 }

@@ -2,6 +2,7 @@ package com.ccoins.bars.controller;
 
 import com.ccoins.bars.controller.swagger.IBarsController;
 import com.ccoins.bars.dto.BarDTO;
+import com.ccoins.bars.dto.IdDTO;
 import com.ccoins.bars.dto.ListDTO;
 import com.ccoins.bars.dto.StringDTO;
 import com.ccoins.bars.service.IBarsService;
@@ -22,7 +23,7 @@ public class BarsController implements IBarsController {
 
     @Override
     @PostMapping
-    public ResponseEntity<BarDTO> saveOrUpdate(@RequestBody BarDTO barDTO){
+    public ResponseEntity<BarDTO> saveOrUpdate(@RequestBody BarDTO barDTO) {
         return this.service.saveOrUpdate(barDTO);
     }
 
@@ -40,13 +41,19 @@ public class BarsController implements IBarsController {
 
     @Override
     @PutMapping("/{id}/active")
-    public ResponseEntity<BarDTO> active(@PathVariable("id") Long id){
+    public ResponseEntity<BarDTO> active(@PathVariable("id") Long id) {
         return this.service.active(id);
     }
 
     @GetMapping("/menu/table/{code}")
     @Override
-    public ResponseEntity<StringDTO> findUrlByTableCode(@PathVariable("code") String code){
+    public ResponseEntity<StringDTO> findUrlByTableCode(@PathVariable("code") String code) {
         return this.service.findUrlByTableCode(code);
+    }
+
+    @GetMapping("/id/party/{id}")
+    @Override
+    public ResponseEntity<IdDTO> getBarIdByParty(@RequestParam("id") Long id) {
+        return this.service.getBarIdByParty(id);
     }
 }

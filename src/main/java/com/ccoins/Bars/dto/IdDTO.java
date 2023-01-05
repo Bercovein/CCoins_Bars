@@ -1,16 +1,15 @@
-package com.ccoins.bars.spotify;
+package com.ccoins.bars.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Builder
-public class UriSPTF {
+public class IdDTO {
 
-    private String uri;
-    private String device_id;
+   private Long id;
 }

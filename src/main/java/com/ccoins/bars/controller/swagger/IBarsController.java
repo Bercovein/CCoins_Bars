@@ -1,6 +1,7 @@
 package com.ccoins.bars.controller.swagger;
 
 import com.ccoins.bars.dto.BarDTO;
+import com.ccoins.bars.dto.IdDTO;
 import com.ccoins.bars.dto.ListDTO;
 import com.ccoins.bars.dto.StringDTO;
 import io.swagger.annotations.Api;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Api(tags = "BAR")
 public interface IBarsController {
@@ -27,4 +29,7 @@ public interface IBarsController {
     @GetMapping("/bars/menu/table/{code}")
     @ApiOperation(value = "Get Url by Table code")
     ResponseEntity<StringDTO> findUrlByTableCode(@PathVariable("code") String code);
+
+    @GetMapping("/id/party/{id}")
+    ResponseEntity<IdDTO> getBarIdByParty(@RequestParam("id") Long id);
 }

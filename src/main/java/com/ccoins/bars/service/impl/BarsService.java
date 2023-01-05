@@ -1,6 +1,7 @@
 package com.ccoins.bars.service.impl;
 
 import com.ccoins.bars.dto.BarDTO;
+import com.ccoins.bars.dto.IdDTO;
 import com.ccoins.bars.dto.ListDTO;
 import com.ccoins.bars.dto.StringDTO;
 import com.ccoins.bars.exceptions.UnauthorizedException;
@@ -108,5 +109,18 @@ public class BarsService implements IBarsService {
 
     private BarDTO convert(Bar bar){
         return (BarDTO)MapperUtils.map(bar,BarDTO.class);
+    }
+
+    @Override
+    public ResponseEntity<IdDTO> getBarIdByParty(Long id){
+        try{
+            IdDTO response = IdDTO.builder().id(
+                    this.repository.getBarIdByParty(id).orElse(null)
+            ).build();
+            return ResponseEntity.ok(response);
+        }catch(Exception e){
+            throw new UnauthorizedException(ExceptionConstant.BAR_GET_BAR_ID_BY_PARTY_ERROR_CODE,
+                    this.getClass(), ExceptionConstant.BAR_GET_BAR_ID_BY_PARTY_ERROR);
+        }
     }
 }

@@ -37,6 +37,8 @@ public class GameDTO {
                 .rules(game.getRules())
                 .points(game.getPoints())
                 .active(game.isActive())
+                .closeTime(game.getCloseTime())
+                .openTime(game.getOpenTime())
                 .bar(game.getBar().getId())
                 .gameType(GameTypeDTO.builder()
                     .id(game.getGameType().getId())

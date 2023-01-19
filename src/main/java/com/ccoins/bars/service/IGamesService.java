@@ -14,4 +14,6 @@ public interface IGamesService {
     ResponseEntity<GameDTO> active(Long id);
 
     ResponseEntity<ListDTO> findAllTypes();
+
+    ResponseEntity<GameDTO> findVotingGameByBarId(Long barId);
 }

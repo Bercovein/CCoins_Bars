@@ -16,11 +16,14 @@ import java.util.Optional;
 @Repository
 public interface IGamesRepository extends JpaRepository<Game, Long> {
 
-    Game save(Game bar);
+    Game save(Game game);
 
     Optional<IPGame> findProjectedById(Long id);
     
     Optional<List<IPGame>> findByBarId(Long id);
+
+    @Query("FROM Game where bar.id = :bar and gameType.name = :gameType")
+    Optional<Game> findByBarIdAndGameTypeName(@Param("bar") Long bar, @Param("gameType") String gameType);
 
     @Transactional
     @Modifying

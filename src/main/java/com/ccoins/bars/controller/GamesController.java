@@ -48,4 +48,10 @@ public class GamesController implements IGamesController {
     public ResponseEntity<ListDTO> findAllTypes() {
         return this.service.findAllTypes();
     }
+
+    @GetMapping("/voting/bar/{id}")
+    public ResponseEntity<GameDTO> findVotingGameByBarId(@PathVariable("id") Long id){
+        return this.service.findVotingGameByBarId(id);
+
+    }
 }

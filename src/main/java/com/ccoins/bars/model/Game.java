@@ -1,5 +1,6 @@
 package com.ccoins.bars.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -7,6 +8,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalTime;
+
+import static com.ccoins.bars.utils.DateUtils.HH_MM;
 
 @Data
 @AllArgsConstructor
@@ -31,9 +34,11 @@ public class Game {
     private Long points;
 
     @Column(name="open_time")
+    @JsonFormat(pattern = HH_MM)
     private LocalTime openTime;
 
     @Column(name="close_time")
+    @JsonFormat(pattern = HH_MM)
     private LocalTime closeTime;
 
     @Column(name="active", columnDefinition = "boolean default true")
@@ -46,4 +51,6 @@ public class Game {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_game_type", referencedColumnName = "id")
     private GameType gameType;
+
+
 }

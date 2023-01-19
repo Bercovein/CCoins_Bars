@@ -28,13 +28,13 @@ import java.util.Optional;
 @Slf4j
 public class GamesService implements IGamesService {
 
-    private final IGamesRepository repository;
+    private final IGamesRepository gamesRepository;
     private final IGamesTypesRepository typesRepository;
     private final IBarsRepository barRepository;
     
     @Autowired
-    public GamesService(IGamesRepository repository, IGamesTypesRepository typesRepository, IBarsRepository barRepository) {
-        this.repository = repository;
+    public GamesService(IGamesRepository gamesRepository, IGamesTypesRepository typesRepository, IBarsRepository barRepository) {
+        this.gamesRepository = gamesRepository;
         this.typesRepository = typesRepository;
         this.barRepository = barRepository;
     }
@@ -55,7 +55,7 @@ public class GamesService implements IGamesService {
             }
 
             game.setBar(barOpt.get());
-            game = this.repository.save(game);
+            game = this.gamesRepository.save(game);
             return ResponseEntity.ok(GameDTO.convert(game));
         }catch(Exception e){
             throw new UnauthorizedException(ExceptionConstant.GAME_CREATE_OR_UPDATE_ERROR_CODE,
@@ -70,7 +70,7 @@ public class GamesService implements IGamesService {
         Optional<List<IPGame>> opt;
 
         try {
-            opt = this.repository.findByBarId(id);
+            opt = this.gamesRepository.findByBarId(id);
             opt.ifPresent(response::setList);
 
             return ResponseEntity.ok(response);
@@ -85,7 +85,7 @@ public class GamesService implements IGamesService {
     public ResponseEntity<GameDTO> findById(Long id) {
 
         try {
-            Optional<IPGame> game = this.repository.findProjectedById(id);
+            Optional<IPGame> game = this.gamesRepository.findProjectedById(id);
             return ResponseEntity.ok((GameDTO)MapperUtils.map(game,GameDTO.class));
         }catch(Exception e){
             throw new UnauthorizedException(ExceptionConstant.GAME_FIND_BY_ID_ERROR_CODE,
@@ -97,7 +97,7 @@ public class GamesService implements IGamesService {
     public ResponseEntity<GameDTO> active(Long id) {
 
         try {
-            this.repository.updateActive(id);
+            this.gamesRepository.updateActive(id);
         }catch(Exception e){
             e.printStackTrace();
             throw new UnauthorizedException(ExceptionConstant.GAME_UPDATE_ACTIVE_ERROR_CODE,
@@ -120,5 +120,19 @@ public class GamesService implements IGamesService {
             throw new UnauthorizedException(ExceptionConstant.GAME_UPDATE_ACTIVE_ERROR_CODE,
                     this.getClass(), ExceptionConstant.GAME_UPDATE_ACTIVE_ERROR);
         }
+    }
+
+    @Override
+    public ResponseEntity<GameDTO> findVotingGameByBarId(Long barId) {
+
+        GameDTO response = null;
+
+        Optional<Game> gameOptional = this.gamesRepository.findByBarIdAndGameTypeName(barId, "VOTE");
+
+        if (gameOptional.isPresent()){
+            response = GameDTO.convert(gameOptional.get());
+        }
+
+        return ResponseEntity.ok(response);
     }
 }

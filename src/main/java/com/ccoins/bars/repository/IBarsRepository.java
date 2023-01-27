@@ -24,9 +24,9 @@ public interface IBarsRepository extends JpaRepository<Bar, Long> {
     @Query(value = "UPDATE bars set active = IF(active IS TRUE, FALSE, TRUE) where id = :id", nativeQuery = true)
     int updateActive(@Param("id") Long id);
 
-    @Query(value = "select b.id from Parties p" +
-            " inner join Bar_Tables bt on bt.id = p.fk_table" +
-            " inner join Bars b on b.id = bt.fk_bar" +
+    @Query(value = "select b.id from parties p" +
+            " inner join bar_tables bt on bt.id = p.fk_table" +
+            " inner join bars b on b.id = bt.fk_bar" +
             " where p.id = :id", nativeQuery = true)
     Optional<Long> getBarIdByParty(@Param("id") Long id);
 }

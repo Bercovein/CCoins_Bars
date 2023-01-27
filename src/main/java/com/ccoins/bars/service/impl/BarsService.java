@@ -7,8 +7,10 @@ import com.ccoins.bars.dto.StringDTO;
 import com.ccoins.bars.exceptions.UnauthorizedException;
 import com.ccoins.bars.exceptions.constant.ExceptionConstant;
 import com.ccoins.bars.model.Bar;
+import com.ccoins.bars.model.Game;
 import com.ccoins.bars.model.projection.IPBar;
 import com.ccoins.bars.repository.IBarsRepository;
+import com.ccoins.bars.repository.IGamesRepository;
 import com.ccoins.bars.repository.ITableRepository;
 import com.ccoins.bars.service.IBarsService;
 import com.ccoins.bars.utils.MapperUtils;
@@ -27,10 +29,13 @@ public class BarsService implements IBarsService {
     private final IBarsRepository repository;
     private final ITableRepository tableRepository;
 
+    private final IGamesRepository gamesRepository;
+
     @Autowired
-    public BarsService(IBarsRepository repository, ITableRepository tableRepository) {
+    public BarsService(IBarsRepository repository, ITableRepository tableRepository, IGamesRepository gamesRepository) {
         this.repository = repository;
         this.tableRepository = tableRepository;
+        this.gamesRepository = gamesRepository;
     }
 
     @Override
@@ -118,6 +123,17 @@ public class BarsService implements IBarsService {
                     this.repository.getBarIdByParty(id).orElse(null)
             ).build();
             return ResponseEntity.ok(response);
+        }catch(Exception e){
+            throw new UnauthorizedException(ExceptionConstant.BAR_GET_BAR_ID_BY_PARTY_ERROR_CODE,
+                    this.getClass(), ExceptionConstant.BAR_GET_BAR_ID_BY_PARTY_ERROR);
+        }
+    }
+
+    @Override
+    public ResponseEntity<BarDTO> getBarByGame(Long id) {
+        try{
+            Optional<Game> game = this.gamesRepository.findById(id);
+            return ResponseEntity.ok(this.convert(game.get().getBar()));
         }catch(Exception e){
             throw new UnauthorizedException(ExceptionConstant.BAR_GET_BAR_ID_BY_PARTY_ERROR_CODE,
                     this.getClass(), ExceptionConstant.BAR_GET_BAR_ID_BY_PARTY_ERROR);

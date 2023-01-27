@@ -32,4 +32,7 @@ public interface IBarsController {
 
     @GetMapping("/id/party/{id}")
     ResponseEntity<IdDTO> getBarIdByParty(@RequestParam("id") Long id);
+
+    @GetMapping("/game/{id}")
+    ResponseEntity<BarDTO> getBarByGame(@RequestParam("id") Long id);
 }

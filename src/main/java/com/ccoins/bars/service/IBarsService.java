@@ -18,4 +18,6 @@ public interface IBarsService {
     ResponseEntity<StringDTO> findUrlByTableCode(String code);
 
     ResponseEntity<IdDTO> getBarIdByParty(Long id);
+
+    ResponseEntity<BarDTO> getBarByGame(Long id);
 }

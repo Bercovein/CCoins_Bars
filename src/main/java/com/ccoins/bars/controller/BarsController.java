@@ -56,4 +56,10 @@ public class BarsController implements IBarsController {
     public ResponseEntity<IdDTO> getBarIdByParty(@RequestParam("id") Long id) {
         return this.service.getBarIdByParty(id);
     }
+
+    @GetMapping("/game/{id}")
+    @Override
+    public ResponseEntity<BarDTO> getBarByGame(@RequestParam("id") Long id) {
+        return this.service.getBarByGame(id);
+    }
 }

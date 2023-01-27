@@ -52,6 +52,5 @@ public class GamesController implements IGamesController {
     @GetMapping("/voting/bar/{id}")
     public ResponseEntity<GameDTO> findVotingGameByBarId(@PathVariable("id") Long id){
         return this.service.findVotingGameByBarId(id);
-
     }
 }

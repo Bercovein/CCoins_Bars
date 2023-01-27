@@ -1,7 +1,6 @@
 package com.ccoins.bars.controller.swagger;
 
 import com.ccoins.bars.dto.*;
-import com.ccoins.bars.model.projection.IPBarTable;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
@@ -44,7 +43,7 @@ public interface ITablesController {
     List<BarTableDTO> findByIdIn(@RequestBody LongListDTO request);
 
     @ApiOperation(value = "Returns a bar table projection by QR code")
-    IPBarTable findByCode(@PathVariable("code") String code);
+    BarTableDTO findByCode(@PathVariable("code") String code);
 
     @ApiOperation(value = "Returns activity of bar and table by QR code")
     ResponseEntity<GenericRsDTO<?>> isActiveByQrCode(String qrCode);

@@ -38,7 +38,8 @@ public interface ITableRepository extends JpaRepository<BarTable, Long> {
 
     Optional<BarTable> findById(Long id);
 
-    Optional<IPBarTable> findByQrCode(String code);
+    @Query("from BarTable bt where bt.qrCode = :code")
+    Optional<BarTable> findByQrCode(@Param("code")String code);
 
     @Query(value = "SELECT bt.* FROM bar_tables bt" +
             " INNER JOIN bars b ON b.id = bt.fk_bar" +

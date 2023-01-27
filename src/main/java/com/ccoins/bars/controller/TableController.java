@@ -2,7 +2,6 @@ package com.ccoins.bars.controller;
 
 import com.ccoins.bars.controller.swagger.ITablesController;
 import com.ccoins.bars.dto.*;
-import com.ccoins.bars.model.projection.IPBarTable;
 import com.ccoins.bars.service.ITableService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -81,7 +80,7 @@ public class TableController implements ITablesController{
 
     @Override
     @GetMapping("/code/{code}")
-    public IPBarTable findByCode(@PathVariable("code") String code){
+    public BarTableDTO findByCode(@PathVariable("code") String code){
         return this.service.findByCode(code);
     }
 

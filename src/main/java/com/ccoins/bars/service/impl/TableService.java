@@ -292,15 +292,15 @@ public class TableService implements ITableService {
     }
 
     @Override
-    public IPBarTable findByCode(String code) {
-        Optional<IPBarTable> table = this.repository.findByQrCode(code);
+    public BarTableDTO findByCode(String code) {
+        Optional<BarTable> table = this.repository.findByQrCode(code);
 
         if(table.isEmpty()){
             throw new ObjectNotFoundException(ExceptionConstant.TABLE_FIND_BY_CODE_ERROR_CODE,
                     this.getClass(), ExceptionConstant.TABLE_FIND_BY_CODE_ERROR);
         }
 
-        return table.get();
+        return BarTableDTO.convert(table.get());
     }
 
     @Override

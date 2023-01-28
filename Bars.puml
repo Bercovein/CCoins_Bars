@@ -1,0 +1,40 @@
+@startuml
+interface IBarsService {
+}
+class BarsController {
+}
+interface IGamesTypesRepository {
+}
+interface ITableRepository {
+}
+class GamesService {
+}
+class GamesController {
+}
+interface IGamesRepository {
+}
+interface IBarsRepository {
+}
+class TableService {
+}
+interface ITableService {
+}
+class TableController {
+}
+interface IGamesService {
+}
+class BarsService {
+}
+
+
+IBarsController <|.. BarsController
+JpaRepository <|-- IGamesTypesRepository
+JpaRepository <|-- ITableRepository
+IGamesService <|.. GamesService
+IGamesController <|.. GamesController
+JpaRepository <|-- IGamesRepository
+JpaRepository <|-- IBarsRepository
+ITableService <|.. TableService
+ITablesController <|.. TableController
+IBarsService <|.. BarsService
+@enduml

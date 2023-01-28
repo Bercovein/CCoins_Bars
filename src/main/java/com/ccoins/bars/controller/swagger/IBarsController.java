@@ -7,7 +7,6 @@ import com.ccoins.bars.dto.StringDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,13 +25,12 @@ public interface IBarsController {
     @ApiOperation(value = "Active/Unactive by id")
     ResponseEntity<BarDTO> active(@PathVariable("id") Long id);
 
-    @GetMapping("/bars/menu/table/{code}")
     @ApiOperation(value = "Get Url by Table code")
     ResponseEntity<StringDTO> findUrlByTableCode(@PathVariable("code") String code);
 
-    @GetMapping("/id/party/{id}")
-    ResponseEntity<IdDTO> getBarIdByParty(@RequestParam("id") Long id);
+    @ApiOperation(value = "Get Bar id by Party Id")
+    ResponseEntity<IdDTO> getBarIdByParty(@PathVariable("partyId") Long partyId);
 
-    @GetMapping("/game/{id}")
+    @ApiOperation(value = "Get bar by Game Id")
     ResponseEntity<BarDTO> getBarByGame(@RequestParam("id") Long id);
 }

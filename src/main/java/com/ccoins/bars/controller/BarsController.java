@@ -51,10 +51,10 @@ public class BarsController implements IBarsController {
         return this.service.findUrlByTableCode(code);
     }
 
-    @GetMapping("/id/party/{id}")
     @Override
-    public ResponseEntity<IdDTO> getBarIdByParty(@RequestParam("id") Long id) {
-        return this.service.getBarIdByParty(id);
+    @GetMapping("/id/party/{partyId}")
+    public ResponseEntity<IdDTO> getBarIdByParty(@PathVariable("partyId") Long partyId) {
+        return this.service.getBarIdByParty(partyId);
     }
 
     @GetMapping("/game/{id}")

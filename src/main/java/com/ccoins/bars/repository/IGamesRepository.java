@@ -19,8 +19,10 @@ public interface IGamesRepository extends JpaRepository<Game, Long> {
     Game save(Game game);
 
     Optional<IPGame> findProjectedById(Long id);
-    
+
     Optional<List<IPGame>> findByBarId(Long id);
+
+    Optional<List<IPGame>> findByBarIdAndActive(@Param("id")Long id,@Param("active") Boolean active);
 
     @Query("FROM Game where bar.id = :bar and gameType.name = :gameType")
     Optional<Game> findByBarIdAndGameTypeName(@Param("bar") Long bar, @Param("gameType") String gameType);

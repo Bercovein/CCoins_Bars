@@ -15,6 +15,9 @@ public interface IGamesController {
     @ApiOperation(value = "Find list of games by Bar id")
     ResponseEntity<ListDTO> findAllByBar(@PathVariable("id") Long id);
 
+    @GetMapping("/bar/{id}/active")
+    ResponseEntity<ListDTO> findAllActiveByBar(@PathVariable("id") Long id);
+
     @ApiOperation(value = "Find game by id")
     ResponseEntity<GameDTO> findById(@PathVariable("id") Long id);
 

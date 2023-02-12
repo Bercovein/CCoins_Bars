@@ -86,7 +86,7 @@ public class GamesService implements IGamesService {
 
         try {
             Optional<IPGame> game = this.gamesRepository.findProjectedById(id);
-            return ResponseEntity.ok((GameDTO)MapperUtils.map(game,GameDTO.class));
+            return ResponseEntity.ok(MapperUtils.map(game,GameDTO.class));
         }catch(Exception e){
             throw new UnauthorizedException(ExceptionConstant.GAME_FIND_BY_ID_ERROR_CODE,
                     this.getClass(), ExceptionConstant.GAME_FIND_BY_ID_ERROR);
@@ -134,5 +134,22 @@ public class GamesService implements IGamesService {
         }
 
         return ResponseEntity.ok(response);
+    }
+
+    @Override
+    public ResponseEntity<ListDTO> findAllActiveByBar(Long id) {
+        ListDTO response = new ListDTO(new ArrayList<>());
+        Optional<List<IPGame>> opt;
+
+        try {
+            opt = this.gamesRepository.findByBarIdAndActive(id,true);
+            opt.ifPresent(response::setList);
+
+            return ResponseEntity.ok(response);
+        }catch(Exception e){
+            throw new UnauthorizedException(ExceptionConstant.GAME_FIND_BY_BAR_ERROR_CODE,
+                    this.getClass(),
+                    ExceptionConstant.GAME_FIND_BY_BAR_ERROR);
+        }
     }
 }

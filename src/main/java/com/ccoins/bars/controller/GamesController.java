@@ -32,6 +32,13 @@ public class GamesController implements IGamesController {
     }
 
     @Override
+    @GetMapping("/bar/{id}/active")
+    public ResponseEntity<ListDTO> findAllActiveByBar(@PathVariable("id") Long id) {
+        return this.service.findAllActiveByBar(id);
+    }
+
+
+    @Override
     @GetMapping("/{id}")
     public ResponseEntity<GameDTO> findById(@PathVariable("id") Long id) {
         return this.service.findById(id);

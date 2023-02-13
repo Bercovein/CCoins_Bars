@@ -24,7 +24,7 @@ public interface IGamesRepository extends JpaRepository<Game, Long> {
 
     Optional<List<IPGame>> findByBarIdAndActive(@Param("id")Long id,@Param("active") Boolean active);
 
-    @Query("FROM Game where bar.id = :bar and gameType.name = :gameType")
+    @Query("FROM Game where bar.id = :bar and gameType.name = :gameType and active = true")
     Optional<Game> findByBarIdAndGameTypeName(@Param("bar") Long bar, @Param("gameType") String gameType);
 
     @Transactional

@@ -10,9 +10,9 @@ import com.ccoins.bars.model.Bar;
 import com.ccoins.bars.model.Game;
 import com.ccoins.bars.model.projection.IPBar;
 import com.ccoins.bars.repository.IBarsRepository;
-import com.ccoins.bars.repository.IGamesRepository;
 import com.ccoins.bars.repository.ITableRepository;
 import com.ccoins.bars.service.IBarsService;
+import com.ccoins.bars.service.IGamesService;
 import com.ccoins.bars.utils.MapperUtils;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,13 +29,13 @@ public class BarsService implements IBarsService {
     private final IBarsRepository repository;
     private final ITableRepository tableRepository;
 
-    private final IGamesRepository gamesRepository;
+    private final IGamesService gamesService;
 
     @Autowired
-    public BarsService(IBarsRepository repository, ITableRepository tableRepository, IGamesRepository gamesRepository) {
+    public BarsService(IBarsRepository repository, ITableRepository tableRepository, IGamesService gamesService) {
         this.repository = repository;
         this.tableRepository = tableRepository;
-        this.gamesRepository = gamesRepository;
+        this.gamesService = gamesService;
     }
 
     @Override
@@ -43,6 +43,9 @@ public class BarsService implements IBarsService {
 
         try {
             Bar bar = this.repository.save(this.convert(barDTO));
+
+            this.gamesService.addVoteGameToBarIfDoNotHave(bar);
+
             return ResponseEntity.ok(this.convert(bar));
         }catch(Exception e){
             throw new UnauthorizedException(ExceptionConstant.BAR_CREATE_OR_UPDATE_ERROR_CODE,
@@ -109,11 +112,11 @@ public class BarsService implements IBarsService {
     }
 
     private Bar convert(BarDTO barDTO){
-        return (Bar)MapperUtils.map(barDTO,Bar.class);
+        return MapperUtils.map(barDTO,Bar.class);
     }
 
     private BarDTO convert(Bar bar){
-        return (BarDTO)MapperUtils.map(bar,BarDTO.class);
+        return MapperUtils.map(bar,BarDTO.class);
     }
 
     @Override
@@ -131,12 +134,8 @@ public class BarsService implements IBarsService {
 
     @Override
     public ResponseEntity<BarDTO> getBarByGame(Long id) {
-        try{
-            Optional<Game> game = this.gamesRepository.findById(id);
-            return ResponseEntity.ok(this.convert(game.get().getBar()));
-        }catch(Exception e){
-            throw new UnauthorizedException(ExceptionConstant.BAR_GET_BAR_ID_BY_PARTY_ERROR_CODE,
-                    this.getClass(), ExceptionConstant.BAR_GET_BAR_ID_BY_PARTY_ERROR);
-        }
+
+        Optional<Game> gameOptional = this.gamesService.findGameBarById(id);
+        return ResponseEntity.ok(this.convert(gameOptional.get().getBar()));
     }
 }

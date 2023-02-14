@@ -11,4 +11,5 @@ public interface IGamesTypesRepository extends JpaRepository<GameType, Long> {
 
     List<GameType> findAll();
 
+    GameType getByName(String value);
 }

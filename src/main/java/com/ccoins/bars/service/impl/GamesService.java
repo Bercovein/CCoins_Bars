@@ -15,6 +15,7 @@ import com.ccoins.bars.repository.IGamesRepository;
 import com.ccoins.bars.repository.IGamesTypesRepository;
 import com.ccoins.bars.service.IGamesService;
 import com.ccoins.bars.utils.MapperUtils;
+import com.ccoins.bars.utils.enums.GameEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +32,7 @@ public class GamesService implements IGamesService {
     private final IGamesRepository gamesRepository;
     private final IGamesTypesRepository typesRepository;
     private final IBarsRepository barRepository;
-    
+
     @Autowired
     public GamesService(IGamesRepository gamesRepository, IGamesTypesRepository typesRepository, IBarsRepository barRepository) {
         this.gamesRepository = gamesRepository;
@@ -46,7 +47,7 @@ public class GamesService implements IGamesService {
         Game game;
         
         try {
-            game = (Game) MapperUtils.map(gameDTO, Game.class);
+            game = MapperUtils.map(gameDTO, Game.class);
             barOpt = this.barRepository.findById(gameDTO.getBar());
 
             if(barOpt.isEmpty()){
@@ -90,6 +91,16 @@ public class GamesService implements IGamesService {
         }catch(Exception e){
             throw new UnauthorizedException(ExceptionConstant.GAME_FIND_BY_ID_ERROR_CODE,
                     this.getClass(), ExceptionConstant.GAME_FIND_BY_ID_ERROR);
+        }
+    }
+
+    @Override
+    public Optional<Game> findGameBarById(Long id){
+        try{
+            return this.gamesRepository.findById(id);
+        }catch(Exception e){
+            throw new UnauthorizedException(ExceptionConstant.BAR_GET_BAR_ID_BY_PARTY_ERROR_CODE,
+                    this.getClass(), ExceptionConstant.BAR_GET_BAR_ID_BY_PARTY_ERROR);
         }
     }
 
@@ -150,6 +161,23 @@ public class GamesService implements IGamesService {
             throw new UnauthorizedException(ExceptionConstant.GAME_FIND_BY_BAR_ERROR_CODE,
                     this.getClass(),
                     ExceptionConstant.GAME_FIND_BY_BAR_ERROR);
+        }
+    }
+
+    @Override
+    public void addVoteGameToBarIfDoNotHave(Bar bar){
+
+        Optional<Game> gameOpt = this.gamesRepository.findByBarIdAndGameTypeName(bar.getId(), GameEnum.VOTE.getValue());
+
+        if(gameOpt.isEmpty()){
+            this.gamesRepository.save(Game.builder()
+                    .bar(bar)
+                    .active(true)
+                    .gameType(this.typesRepository.getByName(GameEnum.VOTE.getValue()))
+                    .closeTime(bar.getCloseTime())
+                    .openTime(bar.getOpenTime())
+                    .points(10L)
+                    .build());
         }
     }
 }

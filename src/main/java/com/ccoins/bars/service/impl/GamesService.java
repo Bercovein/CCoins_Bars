@@ -1,5 +1,6 @@
 package com.ccoins.bars.service.impl;
 
+import com.ccoins.bars.configuration.VotingConfig;
 import com.ccoins.bars.dto.GameDTO;
 import com.ccoins.bars.dto.GameTypeDTO;
 import com.ccoins.bars.dto.ListDTO;
@@ -33,11 +34,14 @@ public class GamesService implements IGamesService {
     private final IGamesTypesRepository typesRepository;
     private final IBarsRepository barRepository;
 
+    private final VotingConfig votingConfig;
+
     @Autowired
-    public GamesService(IGamesRepository gamesRepository, IGamesTypesRepository typesRepository, IBarsRepository barRepository) {
+    public GamesService(IGamesRepository gamesRepository, IGamesTypesRepository typesRepository, IBarsRepository barRepository, VotingConfig votingConfig) {
         this.gamesRepository = gamesRepository;
         this.typesRepository = typesRepository;
         this.barRepository = barRepository;
+        this.votingConfig = votingConfig;
     }
 
     @Override
@@ -173,6 +177,8 @@ public class GamesService implements IGamesService {
             this.gamesRepository.save(Game.builder()
                     .bar(bar)
                     .active(true)
+                    .name(votingConfig.getName())
+                    .rules(votingConfig.getRules())
                     .gameType(this.typesRepository.getByName(GameEnum.VOTE.getValue()))
                     .closeTime(bar.getCloseTime())
                     .openTime(bar.getOpenTime())

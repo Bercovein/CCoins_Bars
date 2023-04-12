@@ -90,4 +90,12 @@ public class ExceptionConstant {
 
     public static final String BAR_GET_BAR_ID_BY_PARTY_ERROR_CODE = "0024";
     public static final String BAR_GET_BAR_ID_BY_PARTY_ERROR = GET_ERROR_LABEL.concat("bar id by party id");
+
+
+    public static final String BAR_HOUR_SAVE_UPDATE_ERROR_CODE = "0025";
+    public static final String BAR_HOUR_SAVE_UPDATE_ERROR = CREATE_OR_REPLACE_ERROR_LABEL.concat("bar hours");
+
+
+    public static final String BAR_HOUR_DELETE_ERROR_CODE = "0026";
+    public static final String BAR_HOUR_DELETE_ERROR = DELETE_ERROR_LABEL.concat("bar hours");
 }

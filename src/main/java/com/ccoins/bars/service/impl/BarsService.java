@@ -1,9 +1,6 @@
 package com.ccoins.bars.service.impl;
 
-import com.ccoins.bars.dto.BarDTO;
-import com.ccoins.bars.dto.IdDTO;
-import com.ccoins.bars.dto.ListDTO;
-import com.ccoins.bars.dto.StringDTO;
+import com.ccoins.bars.dto.*;
 import com.ccoins.bars.exceptions.UnauthorizedException;
 import com.ccoins.bars.exceptions.constant.ExceptionConstant;
 import com.ccoins.bars.model.Bar;
@@ -12,6 +9,7 @@ import com.ccoins.bars.model.projection.IPBar;
 import com.ccoins.bars.repository.IBarsRepository;
 import com.ccoins.bars.repository.ITableRepository;
 import com.ccoins.bars.service.IBarsService;
+import com.ccoins.bars.service.IDaysService;
 import com.ccoins.bars.service.IGamesService;
 import com.ccoins.bars.utils.MapperUtils;
 import org.apache.logging.log4j.util.Strings;
@@ -26,15 +24,17 @@ import java.util.Optional;
 @Service
 public class BarsService implements IBarsService {
 
-    private final IBarsRepository repository;
+    private final IBarsRepository barRepository;
     private final ITableRepository tableRepository;
 
+    private final IDaysService daysService;
     private final IGamesService gamesService;
 
     @Autowired
-    public BarsService(IBarsRepository repository, ITableRepository tableRepository, IGamesService gamesService) {
-        this.repository = repository;
+    public BarsService(IBarsRepository barRepository, ITableRepository tableRepository, IDaysService daysService, IGamesService gamesService) {
+        this.barRepository = barRepository;
         this.tableRepository = tableRepository;
+        this.daysService = daysService;
         this.gamesService = gamesService;
     }
 
@@ -42,11 +42,18 @@ public class BarsService implements IBarsService {
     public ResponseEntity<BarDTO> saveOrUpdate(BarDTO barDTO) {
 
         try {
-            Bar bar = this.repository.save(this.convert(barDTO));
+            Bar bar = this.barRepository.save(this.convert(barDTO));
+            List<BarHourDTO> hours = new ArrayList<>();
+
+            if(barDTO.getHours() != null && !barDTO.getHours().isEmpty())
+                hours = this.daysService.saveOrUpdate(ListDTO.builder().list(barDTO.getHours()).build());
 
             this.gamesService.addVoteGameToBarIfDoNotHave(bar);
 
-            return ResponseEntity.ok(this.convert(bar));
+            BarDTO response = this.convert(bar);
+            response.setHours(hours);
+
+            return ResponseEntity.ok(response);
         }catch(Exception e){
             throw new UnauthorizedException(ExceptionConstant.BAR_CREATE_OR_UPDATE_ERROR_CODE,
                     this.getClass(), ExceptionConstant.BAR_CREATE_OR_UPDATE_ERROR);
@@ -59,7 +66,7 @@ public class BarsService implements IBarsService {
         ListDTO response = new ListDTO(new ArrayList<>());
 
         try {
-            Optional<List<IPBar>> barsOpt = this.repository.findByOwner(ownerId);
+            Optional<List<IPBar>> barsOpt = this.barRepository.findByOwner(ownerId);
 
             if(barsOpt.isPresent()){
                 response.setList(barsOpt.get());
@@ -77,8 +84,14 @@ public class BarsService implements IBarsService {
     public ResponseEntity<BarDTO> findById(Long id) {
 
         try {
-            Optional<Bar> bar = this.repository.findById(id);
-            return ResponseEntity.ok(this.convert(bar.get()));
+            Optional<Bar> bar = this.barRepository.findById(id);
+            BarDTO response = this.convert(bar.get());
+
+            ListDTO list = this.daysService.getHoursByBar(id).getBody();
+
+            response.setHours((List<BarHourDTO>) list.getList());
+
+            return ResponseEntity.ok(response);
         }catch(Exception e){
             throw new UnauthorizedException(ExceptionConstant.BAR_FIND_BY_ID_ERROR_CODE,
                     this.getClass(), ExceptionConstant.BAR_FIND_BY_ID_ERROR);
@@ -89,7 +102,7 @@ public class BarsService implements IBarsService {
     public ResponseEntity<BarDTO> active(Long id) {
 
         try {
-            this.repository.updateActive(id);
+            this.barRepository.updateActive(id);
         }catch(Exception e){
             throw new UnauthorizedException(ExceptionConstant.BAR_UPDATE_ACTIVE_ERROR_CODE,
                     this.getClass(), ExceptionConstant.BAR_UPDATE_ACTIVE_ERROR);
@@ -123,7 +136,7 @@ public class BarsService implements IBarsService {
     public ResponseEntity<IdDTO> getBarIdByParty(Long id){
         try{
             IdDTO response = IdDTO.builder().id(
-                    this.repository.getBarIdByParty(id).orElse(null)
+                    this.barRepository.getBarIdByParty(id).orElse(null)
             ).build();
             return ResponseEntity.ok(response);
         }catch(Exception e){

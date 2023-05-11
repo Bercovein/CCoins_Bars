@@ -21,9 +21,11 @@ public interface IGamesService {
 
     ResponseEntity<ListDTO> findAllTypes();
 
-    ResponseEntity<GameDTO> findVotingGameByBarId(Long barId);
+    ResponseEntity<GameDTO> findGameByBarIdAndGame(Long barId, String game);
 
     ResponseEntity<ListDTO> findAllActiveByBar(Long id);
 
     void addVoteGameToBarIfDoNotHave(Bar bar);
+    void addCodeGameToBarIfDoNotHave(Bar bar);
+
 }

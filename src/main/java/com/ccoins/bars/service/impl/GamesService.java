@@ -1,5 +1,6 @@
 package com.ccoins.bars.service.impl;
 
+import com.ccoins.bars.configuration.CodeConfig;
 import com.ccoins.bars.configuration.VotingConfig;
 import com.ccoins.bars.dto.GameDTO;
 import com.ccoins.bars.dto.GameTypeDTO;
@@ -35,13 +36,15 @@ public class GamesService implements IGamesService {
     private final IBarsRepository barRepository;
 
     private final VotingConfig votingConfig;
+    private final CodeConfig codeConfig;
 
     @Autowired
-    public GamesService(IGamesRepository gamesRepository, IGamesTypesRepository typesRepository, IBarsRepository barRepository, VotingConfig votingConfig) {
+    public GamesService(IGamesRepository gamesRepository, IGamesTypesRepository typesRepository, IBarsRepository barRepository, VotingConfig votingConfig, CodeConfig codeConfig) {
         this.gamesRepository = gamesRepository;
         this.typesRepository = typesRepository;
         this.barRepository = barRepository;
         this.votingConfig = votingConfig;
+        this.codeConfig = codeConfig;
     }
 
     @Override
@@ -138,7 +141,7 @@ public class GamesService implements IGamesService {
     }
 
     @Override
-    public ResponseEntity<GameDTO> findVotingGameByBarId(Long barId) {
+    public ResponseEntity<GameDTO> findGameByBarIdAndGame(Long barId, String game) {
 
         GameDTO response = null;
 
@@ -186,4 +189,24 @@ public class GamesService implements IGamesService {
                     .build());
         }
     }
+
+    @Override
+    public void addCodeGameToBarIfDoNotHave(Bar bar){
+
+        Optional<Game> gameOpt = this.gamesRepository.findByBarIdAndGameTypeName(bar.getId(), GameEnum.CODE.getValue());
+
+        if(gameOpt.isEmpty()){
+            this.gamesRepository.save(Game.builder()
+                    .bar(bar)
+                    .active(true)
+                    .name(codeConfig.getName())
+                    .rules(codeConfig.getRules())
+                    .gameType(this.typesRepository.getByName(GameEnum.CODE.getValue()))
+                    .closeTime(bar.getCloseTime())
+                    .openTime(bar.getOpenTime())
+                    .points(null)
+                    .build());
+        }
+    }
+
 }

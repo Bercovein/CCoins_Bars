@@ -4,6 +4,7 @@ import com.ccoins.bars.controller.swagger.IGamesController;
 import com.ccoins.bars.dto.GameDTO;
 import com.ccoins.bars.dto.ListDTO;
 import com.ccoins.bars.service.IGamesService;
+import com.ccoins.bars.utils.enums.GameEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -58,6 +59,11 @@ public class GamesController implements IGamesController {
 
     @GetMapping("/voting/bar/{id}")
     public ResponseEntity<GameDTO> findVotingGameByBarId(@PathVariable("id") Long id){
-        return this.service.findVotingGameByBarId(id);
+        return this.service.findGameByBarIdAndGame(id, GameEnum.VOTE.getValue());
+    }
+
+    @GetMapping("/codes/bar/{id}")
+    public ResponseEntity<GameDTO> findCodeGameByBarId(@PathVariable("id") Long id){
+        return this.service.findGameByBarIdAndGame(id, GameEnum.CODE.getValue());
     }
 }

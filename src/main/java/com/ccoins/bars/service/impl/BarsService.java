@@ -49,6 +49,7 @@ public class BarsService implements IBarsService {
                 hours = this.daysService.saveOrUpdate(ListDTO.builder().list(barDTO.getHours()).build());
 
             this.gamesService.addVoteGameToBarIfDoNotHave(bar);
+            this.gamesService.addCodeGameToBarIfDoNotHave(bar);
 
             BarDTO response = this.convert(bar);
             response.setHours(hours);

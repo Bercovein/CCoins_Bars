@@ -145,7 +145,7 @@ public class GamesService implements IGamesService {
 
         GameDTO response = null;
 
-        Optional<Game> gameOptional = this.gamesRepository.findByBarIdAndGameTypeName(barId, "VOTE");
+        Optional<Game> gameOptional = this.gamesRepository.findByBarIdAndGameTypeName(barId, game);
 
         if (gameOptional.isPresent()){
             response = GameDTO.convert(gameOptional.get());

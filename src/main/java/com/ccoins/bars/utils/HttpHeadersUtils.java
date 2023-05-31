@@ -4,6 +4,9 @@ import org.springframework.http.HttpHeaders;
 
 public class HttpHeadersUtils {
 
+    private HttpHeadersUtils() {
+    }
+
     public static final String AUTHORIZATION = "Authorization";
     public static final String BEARER = "Bearer ";
 

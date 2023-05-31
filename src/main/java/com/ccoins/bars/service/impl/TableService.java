@@ -53,7 +53,7 @@ public class TableService implements ITableService {
         BarTable table;
 
         try {
-            table = (BarTable) MapperUtils.map(barTableDTO, BarTable.class);
+            table = MapperUtils.map(barTableDTO, BarTable.class);
             barOpt = this.barRepository.findById(barTableDTO.getBar());
 
             if(barOpt.isEmpty()){
@@ -63,7 +63,7 @@ public class TableService implements ITableService {
 
             table.setBar(barOpt.get());
             table = this.persist(table);
-            return ResponseEntity.ok((BarTableDTO)MapperUtils.map(table, BarTableDTO.class));
+            return ResponseEntity.ok(MapperUtils.map(table, BarTableDTO.class));
         }catch(Exception e){
             throw new UnauthorizedException(ExceptionConstant.BAR_CREATE_OR_UPDATE_ERROR_CODE, this.getClass(),
                     ExceptionConstant.BAR_CREATE_OR_UPDATE_ERROR);
@@ -201,7 +201,7 @@ public class TableService implements ITableService {
         }
 
         this.saveAll(list).forEach(
-                tbl -> response.add((IPBarTableDTO)MapperUtils.map(tbl, IPBarTableDTO.class))
+                tbl -> response.add(MapperUtils.map(tbl, IPBarTableDTO.class))
         );
 
         return ResponseEntity.ok(new GenericRsDTO<>(SUCCESS_CODE,String.format(TABLES_CREATED_BY_QUANTITY,quantity),response));

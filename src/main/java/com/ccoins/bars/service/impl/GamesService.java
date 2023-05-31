@@ -5,6 +5,7 @@ import com.ccoins.bars.configuration.VotingConfig;
 import com.ccoins.bars.dto.GameDTO;
 import com.ccoins.bars.dto.GameTypeDTO;
 import com.ccoins.bars.dto.ListDTO;
+import com.ccoins.bars.exceptions.BadRequestException;
 import com.ccoins.bars.exceptions.ObjectNotFoundException;
 import com.ccoins.bars.exceptions.UnauthorizedException;
 import com.ccoins.bars.exceptions.constant.ExceptionConstant;
@@ -134,7 +135,6 @@ public class GamesService implements IGamesService {
 
             return ResponseEntity.ok(ListDTO.builder().list(MapperUtils.mapList(list, GameTypeDTO.class)).build());
         }catch(Exception e){
-            e.printStackTrace();
             throw new UnauthorizedException(ExceptionConstant.GAME_UPDATE_ACTIVE_ERROR_CODE,
                     this.getClass(), ExceptionConstant.GAME_UPDATE_ACTIVE_ERROR);
         }
@@ -145,12 +145,16 @@ public class GamesService implements IGamesService {
 
         GameDTO response = null;
 
-        Optional<Game> gameOptional = this.gamesRepository.findByBarIdAndGameTypeName(barId, game);
+        try {
+            Optional<Game> gameOptional = this.gamesRepository.findByBarIdAndGameTypeName(barId, game);
 
-        if (gameOptional.isPresent()){
-            response = GameDTO.convert(gameOptional.get());
+            if (gameOptional.isPresent()) {
+                response = GameDTO.convert(gameOptional.get());
+            }
+        }catch(Exception e){
+            throw new ObjectNotFoundException(ExceptionConstant.GAME_BY_BAR_ERROR_CODE,
+                    this.getClass(), ExceptionConstant.GAME_BY_BAR_ERROR);
         }
-
         return ResponseEntity.ok(response);
     }
 
@@ -174,38 +178,50 @@ public class GamesService implements IGamesService {
     @Override
     public void addVoteGameToBarIfDoNotHave(Bar bar){
 
-        Optional<Game> gameOpt = this.gamesRepository.findByBarIdAndGameTypeName(bar.getId(), GameEnum.VOTE.getValue());
+        try{
+            Optional<Game> gameOpt = this.gamesRepository.findByBarIdAndGameTypeName(bar.getId(), GameEnum.VOTE.getValue());
 
-        if(gameOpt.isEmpty()){
-            this.gamesRepository.save(Game.builder()
-                    .bar(bar)
-                    .active(true)
-                    .name(votingConfig.getName())
-                    .rules(votingConfig.getRules())
-                    .gameType(this.typesRepository.getByName(GameEnum.VOTE.getValue()))
-                    .closeTime(bar.getCloseTime())
-                    .openTime(bar.getOpenTime())
-                    .points(10L)
-                    .build());
+            if(gameOpt.isEmpty()){
+                this.gamesRepository.save(Game.builder()
+                        .bar(bar)
+                        .active(true)
+                        .name(votingConfig.getName())
+                        .rules(votingConfig.getRules())
+                        .gameType(this.typesRepository.getByName(GameEnum.VOTE.getValue()))
+                        .closeTime(bar.getCloseTime())
+                        .openTime(bar.getOpenTime())
+                        .points(10L)
+                        .build());
+            }
+        }catch (Exception e){
+            throw new BadRequestException(ExceptionConstant.VOTE_GAME_TO_BAR_ERROR_CODE,
+                    this.getClass(),
+                    ExceptionConstant.VOTE_GAME_TO_BAR_ERROR);
         }
     }
 
     @Override
     public void addCodeGameToBarIfDoNotHave(Bar bar){
 
-        Optional<Game> gameOpt = this.gamesRepository.findByBarIdAndGameTypeName(bar.getId(), GameEnum.CODE.getValue());
+        try {
+            Optional<Game> gameOpt = this.gamesRepository.findByBarIdAndGameTypeName(bar.getId(), GameEnum.CODE.getValue());
 
-        if(gameOpt.isEmpty()){
-            this.gamesRepository.save(Game.builder()
-                    .bar(bar)
-                    .active(true)
-                    .name(codeConfig.getName())
-                    .rules(codeConfig.getRules())
-                    .gameType(this.typesRepository.getByName(GameEnum.CODE.getValue()))
-                    .closeTime(bar.getCloseTime())
-                    .openTime(bar.getOpenTime())
-                    .points(null)
-                    .build());
+            if (gameOpt.isEmpty()) {
+                this.gamesRepository.save(Game.builder()
+                        .bar(bar)
+                        .active(true)
+                        .name(codeConfig.getName())
+                        .rules(codeConfig.getRules())
+                        .gameType(this.typesRepository.getByName(GameEnum.CODE.getValue()))
+                        .closeTime(bar.getCloseTime())
+                        .openTime(bar.getOpenTime())
+                        .points(null)
+                        .build());
+            }
+        }catch (Exception e){
+            throw new BadRequestException(ExceptionConstant.CODE_GAME_TO_BAR_ERROR_CODE,
+                    this.getClass(),
+                    ExceptionConstant.CODE_GAME_TO_BAR_ERROR);
         }
     }
 

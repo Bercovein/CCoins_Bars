@@ -20,21 +20,25 @@ public class DaysController implements IDaysController {
     }
 
     @GetMapping("")
+    @Override
     public ResponseEntity<ListDTO> getDays(){
         return this.service.getDays();
     }
 
     @GetMapping("/bar/{barId}")
+    @Override
     public ResponseEntity<ListDTO> getBarHours(@PathVariable("barId") Long barId){
         return this.service.getHoursByBar(barId);
     }
 
     @PostMapping("/bar")
+    @Override
     public void saveOrUpdate(@RequestBody ListDTO request){
         this.service.saveOrUpdate(request);
     }
 
     @DeleteMapping("/bar")
+    @Override
     public void delete(@RequestBody LongListDTO request){
         this.service.delete(request);
     }

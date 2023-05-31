@@ -38,7 +38,6 @@ public class GamesController implements IGamesController {
         return this.service.findAllActiveByBar(id);
     }
 
-
     @Override
     @GetMapping("/{id}")
     public ResponseEntity<GameDTO> findById(@PathVariable("id") Long id) {
@@ -58,11 +57,13 @@ public class GamesController implements IGamesController {
     }
 
     @GetMapping("/voting/bar/{id}")
+    @Override
     public ResponseEntity<GameDTO> findVotingGameByBarId(@PathVariable("id") Long id){
         return this.service.findGameByBarIdAndGame(id, GameEnum.VOTE.getValue());
     }
 
     @GetMapping("/codes/bar/{id}")
+    @Override
     public ResponseEntity<GameDTO> findCodeGameByBarId(@PathVariable("id") Long id){
         return this.service.findGameByBarIdAndGame(id, GameEnum.CODE.getValue());
     }

@@ -26,7 +26,6 @@ public class BarsService implements IBarsService {
 
     private final IBarsRepository barRepository;
     private final ITableRepository tableRepository;
-
     private final IDaysService daysService;
     private final IGamesService gamesService;
 
@@ -69,9 +68,7 @@ public class BarsService implements IBarsService {
         try {
             Optional<List<IPBar>> barsOpt = this.barRepository.findByOwner(ownerId);
 
-            if(barsOpt.isPresent()){
-                response.setList(barsOpt.get());
-            }
+            barsOpt.ifPresent(response::setList);
 
             return ResponseEntity.ok(response);
         }catch(Exception e){
@@ -86,6 +83,11 @@ public class BarsService implements IBarsService {
 
         try {
             Optional<Bar> bar = this.barRepository.findById(id);
+
+            if(bar.isEmpty()){
+                return ResponseEntity.ok(null);
+            }
+
             BarDTO response = this.convert(bar.get());
 
             ListDTO list = this.daysService.getHoursByBar(id).getBody();

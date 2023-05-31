@@ -10,7 +10,7 @@ public enum StateEnum {
     ACTIVE("active", true),
     UNACTIVE("unactive", false);
 
-    String value;
-    boolean status;
+    final String value;
+    final boolean status;
 
 }

@@ -5,6 +5,9 @@ import java.time.LocalTime;
 
 public class DateUtils {
 
+    private DateUtils() {
+    }
+
     public static final String AUTO_DATE = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP";
 
     public static final String HH_MM = "HH:mm";

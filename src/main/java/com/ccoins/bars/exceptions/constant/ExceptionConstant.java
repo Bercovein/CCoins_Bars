@@ -98,4 +98,16 @@ public class ExceptionConstant {
 
     public static final String BAR_HOUR_DELETE_ERROR_CODE = "0026";
     public static final String BAR_HOUR_DELETE_ERROR = DELETE_ERROR_LABEL.concat("bar hours");
+
+
+    public static final String GAME_BY_BAR_ERROR_CODE = "0027";
+    public static final String GAME_BY_BAR_ERROR = GET_ERROR_LABEL.concat("game by bar");
+
+
+    public static final String VOTE_GAME_TO_BAR_ERROR_CODE = "0028";
+    public static final String VOTE_GAME_TO_BAR_ERROR = "Error trying to add voting game to bar";
+
+
+    public static final String CODE_GAME_TO_BAR_ERROR_CODE = "0029";
+    public static final String CODE_GAME_TO_BAR_ERROR = "Error trying to add code game to bar";
 }

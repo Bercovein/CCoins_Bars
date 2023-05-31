@@ -11,5 +11,5 @@ public enum GameEnum {
     GAME("GAME"),
     CODE("CODE");
 
-    String value;
+    final String value;
 }

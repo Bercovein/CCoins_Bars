@@ -4,6 +4,9 @@ import com.ccoins.bars.utils.enums.StateEnum;
 
 public class StateUtils {
 
+    private StateUtils() {
+    }
+
     public static boolean isActive(String status){
         boolean state;
         if(status.equals(StateEnum.ACTIVE.getValue())){

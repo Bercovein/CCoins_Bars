@@ -1,6 +1,10 @@
 @startuml
 interface IBarsService {
 }
+interface IDaysRepository {
+}
+interface IDaysService {
+}
 class BarsController {
 }
 interface IGamesTypesRepository {
@@ -11,29 +15,47 @@ class GamesService {
 }
 class GamesController {
 }
+class DaysService {
+}
+interface IBarHoursRepository {
+}
+interface IDaysController {
+}
 interface IGamesRepository {
 }
 interface IBarsRepository {
+}
+class DaysController {
 }
 class TableService {
 }
 interface ITableService {
 }
+interface ITablesController {
+}
 class TableController {
 }
 interface IGamesService {
+}
+interface IBarsController {
+}
+interface IGamesController {
 }
 class BarsService {
 }
 
 
+JpaRepository <|-- IDaysRepository
 IBarsController <|.. BarsController
 JpaRepository <|-- IGamesTypesRepository
 JpaRepository <|-- ITableRepository
 IGamesService <|.. GamesService
 IGamesController <|.. GamesController
+IDaysService <|.. DaysService
+JpaRepository <|-- IBarHoursRepository
 JpaRepository <|-- IGamesRepository
 JpaRepository <|-- IBarsRepository
+IDaysController <|.. DaysController
 ITableService <|.. TableService
 ITablesController <|.. TableController
 IBarsService <|.. BarsService

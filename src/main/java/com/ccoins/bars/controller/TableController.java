@@ -12,6 +12,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/tables")
+@CrossOrigin
 public class TableController implements ITablesController{
 
     private final ITableService service;

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/bars")
+@CrossOrigin
 public class BarsController implements IBarsController {
 
     private final IBarsService service;

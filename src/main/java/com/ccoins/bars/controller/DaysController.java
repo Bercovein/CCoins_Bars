@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/days")
+@CrossOrigin
 public class DaysController implements IDaysController {
 
     private final IDaysService service;
